@@ -3,6 +3,7 @@ package com.artronics.sdwn.controller;
 import com.artronics.gsdwn.suren.entities.DeviceConnection;
 import com.artronics.gsdwn.suren.entities.packet.PacketEntity;
 import com.artronics.gsdwn.suren.persistence.repositories.DeviceConnectionRepo;
+import com.artronics.gsdwn.suren.persistence.repositories.PacketRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ public class SdwnControllerImpl implements SdwnController
 
     private Long deviceId;
     private DeviceConnectionRepo deviceConnectionRepo;
+    private PacketRepo packetRepo;
 
     @Override
     public void init()
@@ -27,6 +29,8 @@ public class SdwnControllerImpl implements SdwnController
     @Override
     public void addPacket(PacketEntity packet)
     {
+        log.debug("Persisting Packet...");
+        PacketEntity persistedPacket = packetRepo.save(packet);
 
     }
 
@@ -34,6 +38,12 @@ public class SdwnControllerImpl implements SdwnController
     public void setDeviceId(Long deviceId)
     {
         this.deviceId = deviceId;
+    }
+
+    @Autowired
+    public void setPacketRepo(PacketRepo packetRepo)
+    {
+        this.packetRepo = packetRepo;
     }
 
     @Autowired
