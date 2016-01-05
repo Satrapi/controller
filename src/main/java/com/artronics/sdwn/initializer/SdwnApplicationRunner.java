@@ -1,6 +1,7 @@
 package com.artronics.sdwn.initializer;
 
 import com.artronics.sdwn.device.DeviceDriver;
+import com.artronics.sdwn.exception.DeviceConnectionException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -25,7 +26,14 @@ public class SdwnApplicationRunner implements ApplicationRunner,ApplicationListe
     public void onApplicationEvent(ContextRefreshedEvent event)
     {
         log.debug("Initializing Device Driver...");
-        deviceDriver.init();
+        try {
+            deviceDriver.init();
+            deviceDriver.open();
+
+        }catch (DeviceConnectionException e) {
+            e.printStackTrace();
+            log.error("exception on driver");
+        }
 
     }
 
