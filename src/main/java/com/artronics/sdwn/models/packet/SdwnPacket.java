@@ -4,8 +4,6 @@ import java.util.List;
 
 public class SdwnPacket
 {
-    private Long srcDeviceId;
-    private Long srcControllerId;
     private Packet.Direction dir;
 
     private int len;
