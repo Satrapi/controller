@@ -1,6 +1,7 @@
 package com.artronics.sdwn;
 
 import com.artronics.sdwn.config.SdwnBeanConfig;
+import com.artronics.sdwn.config.SdwnTaskExecutorConfig;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,7 +23,9 @@ public class SdwnApplication {
 //                .sources(SdwnBeanConfig.class)
 //                .child(SdwnApplication.class)
 //                .run(args);
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SdwnBeanConfig.class);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
+                SdwnBeanConfig.class,
+                SdwnTaskExecutorConfig.class);
         context.start();
 	}
 }
