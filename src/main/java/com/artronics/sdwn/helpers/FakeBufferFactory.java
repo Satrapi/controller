@@ -1,7 +1,7 @@
 package com.artronics.sdwn.helpers;
 
-import com.artronics.sdwn.models.packet.Packet;
-import com.artronics.sdwn.models.packet.SdwnPacketHelper;
+import com.artronics.sdwn.persistence.entities.packet.Packet;
+import com.artronics.sdwn.persistence.entities.packet.SdwnPacketHelper;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
