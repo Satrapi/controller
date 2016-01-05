@@ -14,7 +14,7 @@ public class SdwnControllerImpl implements SdwnController
     @Override
     public void init()
     {
-
+        log.debug("Initializing SDWN-Controller");
     }
 
     @Value("${com.artronics.sdwn.device.id}")

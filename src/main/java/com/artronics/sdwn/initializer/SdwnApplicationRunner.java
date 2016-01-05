@@ -1,5 +1,6 @@
 package com.artronics.sdwn.initializer;
 
+import com.artronics.sdwn.controller.SdwnController;
 import com.artronics.sdwn.device.DeviceDriver;
 import com.artronics.sdwn.exception.DeviceConnectionException;
 import org.apache.log4j.Logger;
@@ -16,6 +17,7 @@ public class SdwnApplicationRunner implements ApplicationRunner,ApplicationListe
     private final static Logger log = Logger.getLogger(SdwnApplicationRunner.class);
 
     private DeviceDriver deviceDriver;
+    private SdwnController sdwnController;
 
     @Override
     public void run(ApplicationArguments args) throws Exception
@@ -25,7 +27,8 @@ public class SdwnApplicationRunner implements ApplicationRunner,ApplicationListe
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event)
     {
-        log.debug("Initializing Device Driver...");
+        sdwnController.init();
+
         try {
             deviceDriver.init();
             deviceDriver.open();
@@ -34,7 +37,12 @@ public class SdwnApplicationRunner implements ApplicationRunner,ApplicationListe
             e.printStackTrace();
             log.error("exception on driver");
         }
+    }
 
+    @Autowired
+    public void setSdwnController(SdwnController sdwnController)
+    {
+        this.sdwnController = sdwnController;
     }
 
     @Autowired

@@ -33,6 +33,7 @@ public class DeviceDriverSerialPort implements DeviceDriver,SerialPortEventListe
     @Override
     public void init()
     {
+        log.debug("Initializing Device Driver...");
         log.debug("Connection String is: \""+connectionString+"\"");
         setConnection();
     }
