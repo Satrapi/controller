@@ -6,7 +6,10 @@
 	<groupId>com.artronics.sdwn</groupId>
 	<artifactId>sdwn</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <modules>
+        <module>persistence</module>
+    </modules>
+    <packaging>pom</packaging>
 
 	<name>sdwn</name>
 	<description>SDWN</description>
