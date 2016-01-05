@@ -2,8 +2,10 @@ package com.artronics.sdwn.models.packet;
 
 import java.util.List;
 
-public class SdwnPacket
+public class SdwnPacket implements Packet
 {
+    private List<Integer> content;
+
     private Packet.Direction dir;
 
     private int len;
@@ -19,6 +21,8 @@ public class SdwnPacket
     public static SdwnPacket create(List<Integer> content){
         SdwnPacket packet = new SdwnPacket();
 
+        packet.content = content;
+
         packet.dir = Packet.Direction.RX;
 
         packet.len = SdwnPacketHelper.getSize(content);
@@ -32,5 +36,11 @@ public class SdwnPacket
         packet.nextHop = SdwnPacketHelper.getNextHopAddress(content);
 
         return packet;
+    }
+
+    @Override
+    public List<Integer> getContent()
+    {
+        return content;
     }
 }

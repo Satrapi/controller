@@ -1,11 +1,13 @@
 package com.artronics.sdwn.models.packet;
 
+import java.util.List;
+
 public interface Packet
 {
     Integer DEF_NET_ID=1;
     Integer DEF_MAX_TTL=20;
 
-    String toLogger();
+    List<Integer> getContent();
 
     enum Type
     {
