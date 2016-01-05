@@ -1,6 +1,6 @@
 package com.artronics.sdwn.map;
 
-import com.artronics.sdwn.models.node.SdwnNode;
+import com.artronics.gsdwn.suren.entities.node.SdwnNode;
 import org.junit.Before;
 import org.junit.Test;
 

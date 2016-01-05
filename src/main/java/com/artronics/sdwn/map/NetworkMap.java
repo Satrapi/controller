@@ -1,6 +1,6 @@
 package com.artronics.sdwn.map;
 
-import com.artronics.sdwn.models.node.Node;
+import com.artronics.gsdwn.suren.entities.node.Node;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
