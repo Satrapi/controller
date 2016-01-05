@@ -58,6 +58,8 @@ public class BufferDistributorImpl implements BufferDistributor
         for (List<Integer> buff : buffers) {
             SdwnPacket packet = SdwnPacket.create(buff);
             packetLogger.logPacket(packet, PacketLogger.Level.BUFFER);
+
+
         }
     }
 
