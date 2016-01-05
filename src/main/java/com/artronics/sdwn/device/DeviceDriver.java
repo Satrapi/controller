@@ -1,8 +1,10 @@
 package com.artronics.sdwn.device;
 
-import org.apache.log4j.Logger;
+import com.artronics.sdwn.exception.DeviceConnectionException;
 
 public interface DeviceDriver
 {
     void init();
+
+    void open() throws DeviceConnectionException;
 }
