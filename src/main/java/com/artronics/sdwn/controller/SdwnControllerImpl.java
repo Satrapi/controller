@@ -1,9 +1,7 @@
 package com.artronics.sdwn.controller;
 
-import com.artronics.gsdwn.suren.entities.DeviceConnection;
-import com.artronics.gsdwn.suren.entities.packet.PacketEntity;
-import com.artronics.gsdwn.suren.persistence.repositories.DeviceConnectionRepo;
-import com.artronics.gsdwn.suren.persistence.repositories.PacketRepo;
+import com.artronics.sdwn.domain.entities.packet.PacketEntity;
+import com.artronics.sdwn.domain.repositories.PacketRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +12,8 @@ public class SdwnControllerImpl implements SdwnController
 {
     private final static Logger log = Logger.getLogger(SdwnControllerImpl.class);
 
-    private DeviceConnection deviceConnection;
 
     private Long deviceId;
-    private DeviceConnectionRepo deviceConnectionRepo;
     private PacketRepo packetRepo;
 
     @Override
@@ -44,12 +40,5 @@ public class SdwnControllerImpl implements SdwnController
     public void setPacketRepo(PacketRepo packetRepo)
     {
         this.packetRepo = packetRepo;
-    }
-
-    @Autowired
-    public void setDeviceConnectionRepo(
-            DeviceConnectionRepo deviceConnectionRepo)
-    {
-        this.deviceConnectionRepo = deviceConnectionRepo;
     }
 }

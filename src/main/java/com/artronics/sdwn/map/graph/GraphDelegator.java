@@ -1,6 +1,6 @@
 package com.artronics.sdwn.map.graph;
 
-import com.artronics.gsdwn.suren.entities.node.Node;
+import com.artronics.sdwn.domain.entities.node.Node;
 import org.apache.log4j.Logger;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.DijkstraShortestPath;

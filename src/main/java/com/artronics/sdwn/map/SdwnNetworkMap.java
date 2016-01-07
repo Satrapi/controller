@@ -1,6 +1,6 @@
 package com.artronics.sdwn.map;
 
-import com.artronics.gsdwn.suren.entities.node.SdwnNode;
+import com.artronics.sdwn.domain.entities.node.SdwnNode;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;

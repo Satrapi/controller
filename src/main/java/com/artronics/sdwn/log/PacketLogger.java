@@ -1,6 +1,6 @@
 package com.artronics.sdwn.log;
 
-import com.artronics.gsdwn.suren.entities.packet.Packet;
+import com.artronics.sdwn.domain.entities.packet.Packet;
 import org.apache.log4j.Logger;
 
 public interface PacketLogger
