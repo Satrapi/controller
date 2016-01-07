@@ -1,5 +1,6 @@
 package com.artronics.sdwn.controller.initializer;
 
+import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class SdwnApplicationInitializer implements ApplicationRunner, Applicatio
 
     private String controllerUrl;
 
+    private SdwnControllerEntity controllerEntity;
+
     @Override
     public void run(ApplicationArguments args) throws Exception
     {
@@ -27,7 +30,16 @@ public class SdwnApplicationInitializer implements ApplicationRunner, Applicatio
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event)
     {
+        log.debug("Looking for Sdwn Controller Entity in DB...");
+        controllerEntity = controllerRepo.findByUrl(controllerUrl);
 
+        if (controllerEntity == null) {
+            log.debug("There is no Controller with url:"+controllerUrl+"\nAttempt to create one..");
+            controllerEntity = new SdwnControllerEntity(controllerUrl);
+            controllerEntity.setDescription("Auto created controller during context initialization.");
+            controllerEntity.setStatus(SdwnControllerEntity.Status.ACTIVE);
+            controllerRepo.save(controllerEntity);
+        }
     }
 
     @Autowired
