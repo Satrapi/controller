@@ -9,6 +9,7 @@ import com.artronics.sdwn.domain.repositories.SwitchingNetRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,20 +30,36 @@ public class SdwnControllerImpl implements SdwnController
 
 
     @Override
+    @Transactional
     public SwitchingNetwork registerSwitchingNetwork(SwitchingNetwork device)
     {
         log.debug("Registering new Switching Network Device...");
-//        device.setSdwnController(controllerEntity);
-//        controllerEntity.addSwitchingNet(device);
+        SwitchingNetwork persistedDev;
 
-        controllerRepo.save(controllerEntity);
+        SwitchingNetwork dev = netRepo.findByUrl(device.getUrl());
 
-        device= netRepo.findByUrl(device.getUrl());
+        if (dev == null) {
+//            device.setSdwnController(controllerEntity);
+//            controllerEntity.addSwitchingNet(device);
+            persistedDev = netRepo.create(device,controllerEntity.getId());
+//            controllerRepo.save(controllerEntity);
+//            persistedDev= netRepo.findByUrl(device.getUrl());
+//            persistedDev=netRepo.save(device);
+        }
+        else {
+            dev.setSdwnController(controllerEntity);
+//            controllerEntity.addSwitchingNet(dev);
+//            controllerRepo.save(controllerEntity);
+//            persistedDev= netRepo.findByUrl(device.getUrl());
+            persistedDev=netRepo.save(dev);
+        }
+
+
         log.debug("Device persisted: " + device.toString());
 
-        addToDeviceMap(device);
+        addToDeviceMap(persistedDev);
 
-        return device;
+        return persistedDev;
     }
 
     private void addToDeviceMap(SwitchingNetwork device)
