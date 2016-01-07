@@ -30,16 +30,6 @@ public class SdwnApplicationInitializer implements ApplicationRunner, Applicatio
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event)
     {
-        log.debug("Looking for Sdwn Controller Entity in DB...");
-        controllerEntity = controllerRepo.findByUrl(controllerUrl);
-
-        if (controllerEntity == null) {
-            log.debug("There is no Controller with url:"+controllerUrl+"\nAttempt to create one..");
-            controllerEntity = new SdwnControllerEntity(controllerUrl);
-            controllerEntity.setDescription("Auto created controller during context initialization.");
-            controllerEntity.setStatus(SdwnControllerEntity.Status.ACTIVE);
-            controllerRepo.save(controllerEntity);
-        }
     }
 
     @Autowired

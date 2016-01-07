@@ -1,5 +1,6 @@
 package com.artronics.sdwn.controller;
 
+import com.artronics.sdwn.domain.entities.SwitchingNetwork;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import org.apache.log4j.Logger;
@@ -14,9 +15,9 @@ public class SdwnControllerImpl implements SdwnController
     private PacketRepo packetRepo;
 
     @Override
-    public void init()
+    public SwitchingNetwork registerSwitchingNetwork(SwitchingNetwork device)
     {
-        log.debug("Initializing SDWN-Controller");
+        return null;
     }
 
     @Override
