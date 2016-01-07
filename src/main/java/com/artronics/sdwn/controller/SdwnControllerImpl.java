@@ -21,7 +21,7 @@ public class SdwnControllerImpl implements SdwnController
 {
     private final static Logger log = Logger.getLogger(SdwnControllerImpl.class);
 
-    private Map<Long, SwitchingNetworkService> devices = new HashMap<>();
+    private Map<Long, DeviceConnectionService> devices = new HashMap<>();
 
     private DeviceConnectionRepo deviceRepo;
 
@@ -58,9 +58,9 @@ public class SdwnControllerImpl implements SdwnController
     {
         final String serviceUrl = device.getUrl() + "/deviceService";
         HessianProxyFactory factory = new HessianProxyFactory();
-        SwitchingNetworkService service;
-        service = (SwitchingNetworkService)
-                factory.create(SwitchingNetworkService.class, serviceUrl);
+        DeviceConnectionService service;
+        service = (DeviceConnectionService)
+                factory.create(DeviceConnectionService.class, serviceUrl);
 
         devices.put(device.getId(), service);
     }

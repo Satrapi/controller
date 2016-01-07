@@ -1,5 +1,5 @@
 package com.artronics.sdwn.controller;
 
-public interface SwitchingNetworkService
+public interface DeviceConnectionService
 {
 }
