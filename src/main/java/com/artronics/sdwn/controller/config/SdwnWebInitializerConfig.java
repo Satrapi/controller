@@ -1,6 +1,6 @@
-package com.artronics.sdwn.config;
+package com.artronics.sdwn.controller.config;
 
-import com.artronics.sdwn.SdwnApplication;
+import com.artronics.sdwn.controller.SdwnApplication;
 import org.apache.log4j.Logger;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;

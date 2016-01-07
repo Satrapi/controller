@@ -1,4 +1,4 @@
-package com.artronics.sdwn.initializer;
+package com.artronics.sdwn.controller.initializer;
 
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import org.apache.log4j.Logger;

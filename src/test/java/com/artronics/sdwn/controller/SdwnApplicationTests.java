@@ -1,4 +1,4 @@
-package com.artronics.sdwn;
+package com.artronics.sdwn.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

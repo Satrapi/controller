@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.artronics.sdwn</groupId>
-	<artifactId>sdwn</artifactId>
+	<artifactId>sdwn-controller</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 

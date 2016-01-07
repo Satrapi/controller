@@ -1,4 +1,4 @@
-package com.artronics.sdwn.map;
+package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 

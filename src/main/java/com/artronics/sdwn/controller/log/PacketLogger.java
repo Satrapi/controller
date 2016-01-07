@@ -1,4 +1,4 @@
-package com.artronics.sdwn.log;
+package com.artronics.sdwn.controller.log;
 
 import com.artronics.sdwn.domain.entities.packet.Packet;
 import org.apache.log4j.Logger;

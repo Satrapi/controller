@@ -1,4 +1,4 @@
-package com.artronics.sdwn;
+package com.artronics.sdwn.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;

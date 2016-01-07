@@ -1,4 +1,4 @@
-package com.artronics.sdwn.map.graph;
+package com.artronics.sdwn.controller.map.graph;
 
 
 import com.artronics.sdwn.domain.entities.node.SimpleNode;

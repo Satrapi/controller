@@ -1,7 +1,7 @@
-package com.artronics.sdwn;
+package com.artronics.sdwn.controller;
 
-import com.artronics.sdwn.config.HessianRmiConfig;
-import com.artronics.sdwn.config.SdwnBeanConfig;
+import com.artronics.sdwn.controller.config.HessianRmiConfig;
+import com.artronics.sdwn.controller.config.SdwnBeanConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 

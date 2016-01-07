@@ -1,4 +1,4 @@
-package com.artronics.sdwn.initializer;
+package com.artronics.sdwn.controller.initializer;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
