@@ -6,11 +6,13 @@ import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import com.artronics.sdwn.domain.repositories.SwitchingNetRepo;
+import com.caucho.hessian.client.HessianProxyFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +21,7 @@ public class SdwnControllerImpl implements SdwnController
 {
     private final static Logger log = Logger.getLogger(SdwnControllerImpl.class);
 
-    private Map<Long,String> devices = new HashMap<>();
+    private Map<Long, SwitchingNetworkService> devices = new HashMap<>();
 
     private SwitchingNetRepo netRepo;
 
@@ -31,7 +33,8 @@ public class SdwnControllerImpl implements SdwnController
 
     @Override
     @Transactional
-    public SwitchingNetwork registerSwitchingNetwork(SwitchingNetwork device)
+    public SwitchingNetwork registerSwitchingNetwork(SwitchingNetwork device) throws
+            MalformedURLException
     {
         log.debug("Registering new Switching Network Device...");
         SwitchingNetwork persistedDev;
@@ -39,11 +42,10 @@ public class SdwnControllerImpl implements SdwnController
         SwitchingNetwork dev = netRepo.findByUrl(device.getUrl());
 
         if (dev == null) {
-            persistedDev = netRepo.create(device,controllerEntity.getId());
-        }
-        else {
+            persistedDev = netRepo.create(device, controllerEntity.getId());
+        }else {
             dev.setSdwnController(controllerEntity);
-            persistedDev=netRepo.create(dev,controllerEntity.getId());
+            persistedDev = netRepo.create(dev, controllerEntity.getId());
         }
 
         log.debug("Device persisted: " + persistedDev.toString());
@@ -53,9 +55,15 @@ public class SdwnControllerImpl implements SdwnController
         return persistedDev;
     }
 
-    private void addToDeviceMap(SwitchingNetwork device)
+    private void addToDeviceMap(SwitchingNetwork device) throws MalformedURLException
     {
-        devices.put(device.getId(),device.getUrl());
+        final String serviceUrl = device.getUrl() + "/deviceService";
+        HessianProxyFactory factory = new HessianProxyFactory();
+        SwitchingNetworkService service;
+        service = (SwitchingNetworkService)
+                factory.create(SwitchingNetworkService.class, serviceUrl);
+
+        devices.put(device.getId(), service);
     }
 
     @Override
