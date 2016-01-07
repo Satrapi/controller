@@ -32,8 +32,8 @@ public class SdwnControllerImpl implements SdwnController
     public SwitchingNetwork registerSwitchingNetwork(SwitchingNetwork device)
     {
         log.debug("Registering new Switching Network Device...");
-        device.setSdwnController(controllerEntity);
-        controllerEntity.addSwitchingNet(device);
+//        device.setSdwnController(controllerEntity);
+//        controllerEntity.addSwitchingNet(device);
 
         controllerRepo.save(controllerEntity);
 
