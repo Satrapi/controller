@@ -39,23 +39,14 @@ public class SdwnControllerImpl implements SdwnController
         SwitchingNetwork dev = netRepo.findByUrl(device.getUrl());
 
         if (dev == null) {
-//            device.setSdwnController(controllerEntity);
-//            controllerEntity.addSwitchingNet(device);
             persistedDev = netRepo.create(device,controllerEntity.getId());
-//            controllerRepo.save(controllerEntity);
-//            persistedDev= netRepo.findByUrl(device.getUrl());
-//            persistedDev=netRepo.save(device);
         }
         else {
             dev.setSdwnController(controllerEntity);
-//            controllerEntity.addSwitchingNet(dev);
-//            controllerRepo.save(controllerEntity);
-//            persistedDev= netRepo.findByUrl(device.getUrl());
-            persistedDev=netRepo.save(dev);
+            persistedDev=netRepo.create(dev,controllerEntity.getId());
         }
 
-
-        log.debug("Device persisted: " + device.toString());
+        log.debug("Device persisted: " + persistedDev.toString());
 
         addToDeviceMap(persistedDev);
 
