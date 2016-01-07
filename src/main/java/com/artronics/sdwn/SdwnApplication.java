@@ -1,5 +1,6 @@
 package com.artronics.sdwn;
 
+import com.artronics.sdwn.config.HessianRmiConfig;
 import com.artronics.sdwn.config.SdwnBeanConfig;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -10,7 +11,9 @@ public class SdwnApplication
     public static void main(String[] args)
     {
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
-        builder.sources(SdwnApplication.class, SdwnBeanConfig.class)
+        builder.sources(SdwnApplication.class,
+                        SdwnBeanConfig.class,
+                        HessianRmiConfig.class)
                .build().run(args);
 //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 //                SdwnBeanConfig.class,
