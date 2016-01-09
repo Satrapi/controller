@@ -9,13 +9,17 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
 @Component
 public class SdwnControllerImpl implements SdwnController
 {
     private final static Logger log = Logger.getLogger(SdwnControllerImpl.class);
+
+    private BlockingQueue<PacketEntity> packetQueue;
 
     private Map<Long, DeviceConnectionService> devices = new HashMap<>();
 
@@ -26,12 +30,28 @@ public class SdwnControllerImpl implements SdwnController
     private PacketRepo packetRepo;
     private SdwnControllerRepo controllerRepo;
 
+    private volatile boolean isStarted = false;
+
     @Override
+    public void start()
+    {
+        Thread packLst = new Thread(new PacketListener(),"PacketThr");
+        isStarted = true;
+        packLst.start();
+    }
+
     public void addPacket(PacketEntity packet)
     {
         log.debug("Persisting Packet...");
         PacketEntity persistedPacket = packetRepo.save(packet);
 
+    }
+
+    @Resource(name = "packetQueue")
+    public void setPacketQueue(
+            BlockingQueue<PacketEntity> packetQueue)
+    {
+        this.packetQueue = packetQueue;
     }
 
     @Autowired
@@ -64,6 +84,24 @@ public class SdwnControllerImpl implements SdwnController
     public String toString()
     {
         return super.toString();
+    }
+
+    private class PacketListener implements Runnable
+    {
+        @Override
+        public void run()
+        {
+            try {
+                while (isStarted)
+                    while (!packetQueue.isEmpty()) {
+                        PacketEntity packet = packetQueue.take();
+                        addPacket(packet);
+                    }
+
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

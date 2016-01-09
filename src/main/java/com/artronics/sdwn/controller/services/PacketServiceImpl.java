@@ -20,7 +20,7 @@ public class PacketServiceImpl implements PacketService
         packetQueue.add(packet);
     }
 
-    @Resource
+    @Resource(name = "packetQueue")
     public void setPacketQueue(
             BlockingQueue<PacketEntity> packetQueue)
     {
