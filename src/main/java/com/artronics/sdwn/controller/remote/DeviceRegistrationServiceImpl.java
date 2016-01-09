@@ -6,7 +6,6 @@ import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
@@ -18,8 +17,12 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     private DeviceConnectionRepo deviceRepo;
 
     @Override
-    @Transactional
     public DeviceConnectionEntity register(DeviceConnectionEntity device)
+    {
+        return persistDevice(device);
+    }
+
+    private DeviceConnectionEntity persistDevice(DeviceConnectionEntity device)
     {
         log.debug("Registering new DeviceConnection: "+device.toString());
         DeviceConnectionEntity persistedDev;
@@ -35,6 +38,8 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
         log.debug("Device persisted: " + persistedDev.toString());
 
+//        persistedDev = new DeviceConnectionEntity("kirr");
+//        log.debug("kirrr");
         return persistedDev;
     }
 
@@ -45,4 +50,9 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
         this.controllerEntity = controllerEntity;
     }
 
+    @Autowired
+    public void setDeviceRepo(DeviceConnectionRepo deviceRepo)
+    {
+        this.deviceRepo = deviceRepo;
+    }
 }
