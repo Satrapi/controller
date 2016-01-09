@@ -8,7 +8,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.artronics.sdwn.controller"})
+@ComponentScan(basePackages = {"com.artronics.sdwn.controller",
+"com.artronics.sdwn.domain"})
 public class SdwnApplication
 {
     public static void main(String[] args)

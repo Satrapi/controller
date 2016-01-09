@@ -6,9 +6,9 @@ import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
-import com.caucho.hessian.client.HessianProxyFactory;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.remoting.caucho.HessianProxyFactoryBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +35,7 @@ public class SdwnControllerImpl implements SdwnController
     public DeviceConnectionEntity registerDeviceConnection(DeviceConnectionEntity device) throws
             MalformedURLException
     {
-        log.debug("Registering new Switching Network Device...");
+        log.debug("Registering new DeviceConnection: "+device.toString());
         DeviceConnectionEntity persistedDev;
 
         DeviceConnectionEntity dev = deviceRepo.findByUrl(device.getUrl());
@@ -51,18 +51,33 @@ public class SdwnControllerImpl implements SdwnController
 
         registerDevService(persistedDev);
 
+//        startDevice(devices.get(persistedDev.getId()));
+
         return persistedDev;
     }
 
     private void registerDevService(DeviceConnectionEntity device) throws MalformedURLException
     {
-        final String serviceUrl = device.getUrl() + "/deviceService";
-        HessianProxyFactory factory = new HessianProxyFactory();
         DeviceConnectionService service;
-        service = (DeviceConnectionService)
-                factory.create(DeviceConnectionService.class, serviceUrl);
+        service = getDeviceService(device);
 
         devices.put(device.getId(), service);
+    }
+
+    public DeviceConnectionService getDeviceService(DeviceConnectionEntity device){
+        final String serviceUrl = device.getUrl() + "/deviceService";
+        HessianProxyFactoryBean pb = new HessianProxyFactoryBean();
+        pb.setServiceUrl(serviceUrl);
+        pb.setServiceInterface(DeviceConnectionService.class);
+        pb.afterPropertiesSet();
+        DeviceConnectionService s = (DeviceConnectionService) pb.getObject();
+
+        return s;
+    }
+
+    private void startDevice(DeviceConnectionService deviceService){
+        deviceService.init();
+        deviceService.open();
     }
 
     @Override
@@ -98,4 +113,11 @@ public class SdwnControllerImpl implements SdwnController
     {
         this.packetRepo = packetRepo;
     }
+
+    @Override
+    public String toString()
+    {
+        return super.toString();
+    }
+
 }

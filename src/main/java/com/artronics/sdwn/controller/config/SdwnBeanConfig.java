@@ -35,6 +35,8 @@ public class SdwnBeanConfig
             controllerRepo.save(controllerEntity);
         }
 
+        log.debug("Found SdwnController: id: "+controllerEntity.getId()
+                          + " and Url: "+controllerEntity.getUrl());
         return controllerEntity;
     }
 

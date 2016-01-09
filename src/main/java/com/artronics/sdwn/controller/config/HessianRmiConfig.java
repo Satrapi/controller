@@ -16,8 +16,9 @@ public class HessianRmiConfig
     private SdwnController sdwnController;
 
     @Bean(name = "/sdwnController")
-    public HessianServiceExporter pingServiceExport() {
+    public HessianServiceExporter sdwnControllerServiceExport() {
         HessianServiceExporter he = new HessianServiceExporter();
+        log.debug("Creating SdwnController Hessian service: "+sdwnController.toString());
         he.setService(sdwnController);
         he.setServiceInterface(SdwnController.class);
         return he;
