@@ -3,6 +3,8 @@ package com.artronics.sdwn.controller.config;
 import com.artronics.sdwn.controller.SdwnController;
 import com.artronics.sdwn.controller.remote.DeviceRegistrationService;
 import com.artronics.sdwn.controller.remote.DeviceRegistrationServiceImpl;
+import com.artronics.sdwn.controller.services.PacketService;
+import com.artronics.sdwn.controller.services.PacketServiceImpl;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -20,10 +22,12 @@ public class HessianRmiConfig
     private SdwnController sdwnController;
 
     private DeviceRegistrationService registrationService;
+    private PacketService packetService;
 
     @PostConstruct
     public void initBean(){
         this.registrationService = new DeviceRegistrationServiceImpl();
+        this.packetService = new PacketServiceImpl();
     }
 
     @Bean
@@ -31,6 +35,11 @@ public class HessianRmiConfig
         return this.registrationService;
     }
 
+    @Bean
+    public void setPacketService(PacketService packetService)
+    {
+        this.packetService = packetService;
+    }
 
     @Bean(name = "/sdwnController")
     public HessianServiceExporter sdwnControllerServiceExport() {
@@ -47,6 +56,15 @@ public class HessianRmiConfig
         log.debug("Creating DeviceRegistration Hessian service: "+registrationService.toString());
         he.setService(registrationService);
         he.setServiceInterface(DeviceRegistrationService.class);
+        return he;
+    }
+
+    @Bean(name = "/packetService")
+    public HessianServiceExporter packetServiceExport() {
+        HessianServiceExporter he = new HessianServiceExporter();
+        log.debug("Creating PacketService Hessian service: "+packetService.toString());
+        he.setService(packetService);
+        he.setServiceInterface(PacketService.class);
         return he;
     }
 
