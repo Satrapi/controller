@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -16,6 +17,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 @Configuration
 @PropertySource("classpath:application.properties")
+@ComponentScan(basePackages = {"com.artronics.sdwn.controller",
+        "com.artronics.sdwn.domain"})
 public class SdwnBeanConfig
 {
     private final static Logger log = Logger.getLogger(SdwnBeanConfig.class);
@@ -67,4 +70,5 @@ public class SdwnBeanConfig
     public BlockingQueue<PacketEntity> getPacketQueue(){
         return new LinkedBlockingQueue<>();
     }
+
 }

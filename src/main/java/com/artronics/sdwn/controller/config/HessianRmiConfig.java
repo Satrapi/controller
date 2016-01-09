@@ -36,9 +36,9 @@ public class HessianRmiConfig
     }
 
     @Bean
-    public void setPacketService(PacketService packetService)
+    public PacketService getPacketService()
     {
-        this.packetService = packetService;
+        return this.packetService;
     }
 
     @Bean(name = "/sdwnController")
