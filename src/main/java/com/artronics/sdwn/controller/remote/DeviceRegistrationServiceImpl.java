@@ -38,8 +38,6 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
         log.debug("Device persisted: " + persistedDev.toString());
 
-//        persistedDev = new DeviceConnectionEntity("kirr");
-//        log.debug("kirrr");
         return persistedDev;
     }
 
