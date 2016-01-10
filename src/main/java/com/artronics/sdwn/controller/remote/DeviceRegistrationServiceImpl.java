@@ -1,7 +1,7 @@
 package com.artronics.sdwn.controller.remote;
 
+import com.artronics.sdwn.controller.map.MapUpdater;
 import com.artronics.sdwn.controller.map.NetworkMap;
-import com.artronics.sdwn.controller.map.SdwnNetworkMap;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
@@ -24,6 +24,8 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
     private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
 
+    private MapUpdater mapUpdater;
+
     @Override
     public DeviceConnectionEntity register(DeviceConnectionEntity device)
     {
@@ -44,10 +46,10 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
             persistedDev = deviceRepo.create(dev, controllerEntity.getId());
         }
 
-        NetworkMap map =  new SdwnNetworkMap();
-        netMap.put(persistedDev.getId(),map);
 
         log.debug("Device persisted: " + persistedDev.toString());
+
+        mapUpdater.addSink(persistedDev);
 
         return persistedDev;
     }
@@ -70,6 +72,12 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
             Map<Long, NetworkMap<SdwnNodeEntity>> netMap)
     {
         this.netMap = netMap;
+    }
+
+    @Autowired
+    public void setMapUpdater(MapUpdater mapUpdater)
+    {
+        this.mapUpdater = mapUpdater;
     }
 
 }
