@@ -5,6 +5,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.List;
+import java.util.Set;
 
 public interface NetworkMap<N extends Node>
 {
@@ -18,9 +19,12 @@ public interface NetworkMap<N extends Node>
 
     boolean contains(N node);
 
+    Set<N> getNeighbors(N node);
     List<N> getAllNodes();
 
     Graph<N, DefaultWeightedEdge> getNetworkGraph();
 
     void removeLink(N srcNode, N neighbor);
+
+    boolean isIsland(N neighbor);
 }

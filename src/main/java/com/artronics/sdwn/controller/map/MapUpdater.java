@@ -9,4 +9,6 @@ public interface MapUpdater
     SdwnNodeEntity addSink(DeviceConnectionEntity device);
 
     void addPacket(PacketEntity packet);
+
+    NetworkMap<SdwnNodeEntity> getNetworkMap(DeviceConnectionEntity device);
 }

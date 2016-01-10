@@ -1,7 +1,7 @@
 package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.domain.entities.node.Neighbor;
-import com.artronics.sdwn.domain.entities.node.SdwnNode;
+import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -10,7 +10,7 @@ import static org.junit.Assert.assertThat;
 public class RssiSimpleWeightCalculatorTest
 {
     WeightCalculator weightCalculator = new RssiSimpleWeightCalculator();
-    SdwnNode node = new SdwnNode(10L);
+    SdwnNodeEntity node = new SdwnNodeEntity(10L);
     Neighbor neighbor = new Neighbor(20L, 100);
 
     @Test

@@ -11,4 +11,10 @@ public class NodeLoggerImpl implements NodeLogger
     {
         newNode.debug("New Node:" +node.toString());
     }
+
+    @Override
+    public void removeNode(SdwnNodeEntity node)
+    {
+        removeNode.debug("Remove Node: " + node.toString());
+    }
 }
