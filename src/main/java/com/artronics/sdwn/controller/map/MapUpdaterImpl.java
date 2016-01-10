@@ -28,8 +28,7 @@ public class MapUpdaterImpl implements MapUpdater
 
         log.debug("Update NetworkMap. Adding sink node: "+device.getSinkAddress() + " to NetworkMap.");
 
-        SdwnNodeEntity sink = new SdwnNodeEntity(device.getSinkAddress());
-        sink.setDevice(device);
+        SdwnNodeEntity sink = new SdwnNodeEntity(device.getSinkAddress(),device);
         sink.setType(SdwnNodeEntity.Type.SINK);
         sink.setStatus(SdwnNodeEntity.Status.ACTIVE);
 

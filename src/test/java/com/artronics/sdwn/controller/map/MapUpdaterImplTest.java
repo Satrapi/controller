@@ -1,13 +1,11 @@
 package com.artronics.sdwn.controller.map;
 
+import com.artronics.sdwn.controller.config.MockRepoBeanConfig;
 import com.artronics.sdwn.controller.config.SimpleBeanAndResources;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
-import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
-import com.artronics.sdwn.domain.repositories.PacketRepo;
-import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,8 +19,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +28,8 @@ import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MapUpdaterImplTest.MapUpdaterBeanConfig.class,
-        SimpleBeanAndResources.class})
+        SimpleBeanAndResources.class,
+        MockRepoBeanConfig.class})
 public class MapUpdaterImplTest
 {
     private static final String DEVICE_URL = "foo.device.url";
@@ -103,6 +100,7 @@ public class MapUpdaterImplTest
 
     @Test
     public void test_addSink(){
+        reset(nodeRepo);
         mapUpdater.addSink(device);
 
         verify(nodeRepo).save(any(SdwnNodeEntity.class));
@@ -143,35 +141,6 @@ public class MapUpdaterImplTest
             mapU.setNodeRepo(mockNodeRepo);
 
             return mapU;
-        }
-
-        @Bean(name = "mockNodeRepo")
-        NodeRepo getMockNodeRepo(){
-            return mock(NodeRepo.class);
-        }
-
-        @Bean(name = "mockControllerRepo")
-        SdwnControllerRepo getMockControllerRepo(){
-            return mock(SdwnControllerRepo.class);
-        }
-
-        @Bean(name = "mockDeviceRepo")
-        DeviceConnectionRepo getMockDeviceRepo(){
-            return mock(DeviceConnectionRepo.class);
-        }
-
-        @Bean(name = "mockPacketRepo")
-        PacketRepo getMockPacketRepo(){
-            return mock(PacketRepo.class);
-        }
-
-        @Bean(name = "mockEntityManager")
-        EntityManager getMockEntityManager(){
-            return mock(EntityManager.class);
-        }
-        @Bean(name = "mockEntityManagerFactory")
-        EntityManagerFactory getMockEntityManagerFactory(){
-            return mock(EntityManagerFactory.class);
         }
     }
 
