@@ -1,11 +1,16 @@
 package com.artronics.sdwn.controller.remote;
 
+import com.artronics.sdwn.controller.map.NetworkMap;
+import com.artronics.sdwn.controller.map.SdwnNetworkMap;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import java.util.Map;
 
 @Component
 public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
@@ -15,6 +20,8 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     private SdwnControllerEntity controllerEntity;
 
     private DeviceConnectionRepo deviceRepo;
+
+    private Map<Long,NetworkMap> netMap;
 
     @Override
     public DeviceConnectionEntity register(DeviceConnectionEntity device)
@@ -36,6 +43,8 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
             persistedDev = deviceRepo.create(dev, controllerEntity.getId());
         }
 
+        netMap.put(persistedDev.getId(),new SdwnNetworkMap());
+
         log.debug("Device persisted: " + persistedDev.toString());
 
         return persistedDev;
@@ -53,4 +62,12 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     {
         this.deviceRepo = deviceRepo;
     }
+
+    @Resource(name = "netMap")
+    public void setNetMap(
+            Map<Long, NetworkMap> netMap)
+    {
+        this.netMap = netMap;
+    }
+
 }
