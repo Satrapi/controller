@@ -1,6 +1,6 @@
 package com.artronics.sdwn.controller.map;
 
-import com.artronics.sdwn.domain.entities.node.SdwnNode;
+import com.artronics.sdwn.domain.entities.node.Node;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
@@ -10,32 +10,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class SdwnNetworkMap implements NetworkMap<SdwnNode>
+public class SdwnNetworkMap implements NetworkMap<Node>
 {
-    protected final ListenableUndirectedWeightedGraph<SdwnNode, DefaultWeightedEdge> graph =
+    protected final ListenableUndirectedWeightedGraph<Node, DefaultWeightedEdge> graph =
             new ListenableUndirectedWeightedGraph
-                    <SdwnNode, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+                    <Node, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 
     @Override
-    public void addNode(SdwnNode node)
+    public void addNode(Node node)
     {
         graph.addVertex(node);
     }
 
     @Override
-    public void removeNode(SdwnNode node)
+    public void removeNode(Node node)
     {
         graph.removeVertex(node);
     }
 
     @Override
-    public void removeLink(SdwnNode srcSdwnNode, SdwnNode neighbor)
+    public void removeLink(Node srcNode, Node neighbor)
     {
-        graph.removeEdge(srcSdwnNode, neighbor);
+        graph.removeEdge(srcNode, neighbor);
     }
 
     @Override
-    public void addLink(SdwnNode source, SdwnNode target, double weight)
+    public void addLink(Node source, Node target, double weight)
     {
         DefaultWeightedEdge edge = graph.addEdge(source, target);
 
@@ -45,25 +45,25 @@ public class SdwnNetworkMap implements NetworkMap<SdwnNode>
     }
 
     @Override
-    public boolean hasLink(SdwnNode source, SdwnNode target)
+    public boolean hasLink(Node source, Node target)
     {
         return graph.containsEdge(source, target);
     }
 
     @Override
-    public boolean contains(SdwnNode node)
+    public boolean contains(Node node)
     {
         return graph.containsVertex(node);
     }
 
     @Override
-    public List<SdwnNode> getAllNodes()
+    public List<Node> getAllNodes()
     {
         return new ArrayList<>(graph.vertexSet());
     }
 
     @Override
-    public Graph<SdwnNode, DefaultWeightedEdge> getNetworkGraph()
+    public Graph<Node, DefaultWeightedEdge> getNetworkGraph()
     {
         return this.graph;
     }
