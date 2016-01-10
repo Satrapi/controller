@@ -32,7 +32,7 @@ public class MapUpdaterImpl implements MapUpdater
         sink.setType(SdwnNodeEntity.Type.SINK);
         sink.setStatus(SdwnNodeEntity.Status.ACTIVE);
 
-        nodeRepo.save(sink);
+        sink = nodeRepo.save(sink);
         log.debug("Sink Node persisted: " +sink.toString());
 
         log.debug("Registering new NetworkMap for this device.");
