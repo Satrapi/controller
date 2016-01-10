@@ -49,6 +49,12 @@ public class SdwnControllerImpl implements SdwnController
 
     }
 
+    @Override
+    public void stop()
+    {
+
+    }
+
     @Resource(name = "packetQueue")
     public void setPacketQueue(
             BlockingQueue<PacketEntity> packetQueue)

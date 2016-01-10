@@ -8,4 +8,6 @@ public interface SdwnController
     void start();
 
     void addPacket(PacketEntity packet);
+
+    void stop();
 }

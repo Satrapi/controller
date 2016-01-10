@@ -24,6 +24,7 @@ public class SdwnApplication
                         SdwnBeanConfig.class,
                         HessianRmiConfig.class
                 )
+//                .registerShutdownHook(true)
                .build().run(args);
 //        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
 //                SdwnBeanConfig.class,

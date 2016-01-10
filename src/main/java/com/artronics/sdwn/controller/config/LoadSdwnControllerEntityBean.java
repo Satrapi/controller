@@ -29,7 +29,12 @@ public class LoadSdwnControllerEntityBean extends SdwnBaseConfig
             controllerRepo.save(controllerEntity);
         }
 
-        log.debug("Found SdwnController: id: "+controllerEntity.getId()
+        else{
+            controllerEntity.setStatus(SdwnControllerEntity.Status.ACTIVE);
+            controllerRepo.save(controllerEntity);
+        }
+
+        log.debug("SdwnController: id: "+controllerEntity.getId()
                           + " and Url: "+controllerEntity.getUrl());
         return controllerEntity;
     }

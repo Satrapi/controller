@@ -38,17 +38,23 @@ public class SdwnApplicationInitializerTest
     @Before
     public void setUp() throws Exception
     {
+    }
+
+    @Test
+    public void it_should_create_an_sdwnController_if_not_exists(){
+        startLoadingCtrl();
+
+        assertNotNull(controllerRepo.findByUrl(controllerUrl));
+    }
+
+
+    private void startLoadingCtrl(){
         context = new AnnotationConfigApplicationContext(
                 SdwnApplicationInitializerTest.SdwnConfigTest.class,
                 LoadSdwnControllerEntityBean.class
         );
     }
 
-    @Test
-    public void it_should_create_an_sdwnController_if_not_exists(){
-//        context.register(LoadSdwnControllerEntityBean.class);
-        assertNotNull(controllerRepo.findByUrl(controllerUrl));
-    }
 
     @Configuration
     @ComponentScan(basePackages = {"com.artronics.sdwn.controller","com.artronics.sdwn.domain"},
