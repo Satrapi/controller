@@ -2,9 +2,9 @@ package com.artronics.sdwn.controller.map;
 
 
 import com.artronics.sdwn.domain.entities.node.Neighbor;
-import com.artronics.sdwn.domain.entities.node.SdwnNode;
+import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 
 public interface WeightCalculator
 {
-    double getWeight(SdwnNode node, Neighbor neighbor);
+    double getWeight(SdwnNodeEntity node, Neighbor neighbor);
 }
