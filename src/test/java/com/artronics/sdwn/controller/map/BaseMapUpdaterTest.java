@@ -75,10 +75,16 @@ public class BaseMapUpdaterTest
         @Qualifier("mockNodeRepo")
         NodeRepo mockNodeRepo;
 
+        @Autowired
+        @Qualifier("fixedWeightCalculator")
+        WeightCalculator weightCalculator;
+
         @Bean(name = "mapUpdaterTest")
         public MapUpdater getMapUpdater(){
             MapUpdaterImpl mapU = new MapUpdaterImpl();
             mapU.setNetMap(netMap);
+
+            mapU.setWeightCalculator(weightCalculator);
 
             mapU.setNodeRepo(mockNodeRepo);
 

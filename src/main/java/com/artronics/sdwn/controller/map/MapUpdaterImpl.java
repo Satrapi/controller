@@ -1,6 +1,9 @@
 package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
+import com.artronics.sdwn.domain.entities.node.Neighbor;
+import com.artronics.sdwn.domain.entities.node.Node;
+import com.artronics.sdwn.domain.entities.node.SdwnNode;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
@@ -10,7 +13,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Component
 @Primary
@@ -20,12 +25,13 @@ public class MapUpdaterImpl implements MapUpdater
 
     private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
 
+    private WeightCalculator weightCalculator;
+
     private NodeRepo nodeRepo;
 
     @Override
     public SdwnNodeEntity addSink(DeviceConnectionEntity device)
     {
-
         log.debug("Update NetworkMap. Adding sink node: "+device.getSinkAddress() + " to NetworkMap.");
 
         SdwnNodeEntity sink = new SdwnNodeEntity(device.getSinkAddress(),device);
@@ -47,6 +53,16 @@ public class MapUpdaterImpl implements MapUpdater
     @Override
     public void addPacket(PacketEntity packet)
     {
+        switch (packet.getType()) {
+            case REPORT:
+                processReportPacket(packet);
+                break;
+        }
+
+    }
+
+    private void processReportPacket(PacketEntity packet)
+    {
 
     }
 
@@ -58,9 +74,28 @@ public class MapUpdaterImpl implements MapUpdater
     }
 
     @Autowired
+    public void setWeightCalculator(WeightCalculator weightCalculator)
+    {
+        this.weightCalculator = weightCalculator;
+    }
+
+    @Autowired
     public void setNodeRepo(NodeRepo nodeRepo)
     {
         this.nodeRepo = nodeRepo;
     }
 
+    private class Report
+    {
+        private final Node src;
+        private final Node dst;
+        private final Set<Neighbor> neighbors;
+
+        public Report(PacketEntity packet)
+        {
+            src = new SdwnNode(Integer.toUnsignedLong(packet.getSrcShortAdd()));
+            dst = new SdwnNode(Integer.toUnsignedLong(packet.getDstShortAdd()));
+            neighbors = new HashSet<>(Neighbor.createNeighbors(packet));
+        }
+    }
 }
