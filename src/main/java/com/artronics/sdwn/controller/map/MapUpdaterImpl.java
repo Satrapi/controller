@@ -161,6 +161,8 @@ public class MapUpdaterImpl implements MapUpdater
         {
             src = new SdwnNodeEntity(Integer.toUnsignedLong(packet.getSrcShortAdd()));
             dst = new SdwnNodeEntity(Integer.toUnsignedLong(packet.getDstShortAdd()));
+            src.setDevice(packet.getDevice());
+            dst.setDevice(packet.getDevice());
             neighbors = new HashSet<>(Neighbor.createNeighbors(packet));
         }
     }
