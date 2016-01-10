@@ -25,6 +25,9 @@ public class MapUpdaterImpl implements MapUpdater
 
     private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
 
+    //This is the map associated with one device.
+    private NetworkMap<Node> subMap;
+
     private WeightCalculator weightCalculator;
 
     private NodeRepo nodeRepo;
@@ -53,6 +56,7 @@ public class MapUpdaterImpl implements MapUpdater
     @Override
     public void addPacket(PacketEntity packet)
     {
+//        subMap = netMap.get(packet.ge)
         switch (packet.getType()) {
             case REPORT:
                 processReportPacket(packet);
