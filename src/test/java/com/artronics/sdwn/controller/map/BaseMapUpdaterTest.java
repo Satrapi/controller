@@ -1,7 +1,7 @@
 package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.controller.config.MockRepoBeanConfig;
-import com.artronics.sdwn.controller.config.SimpleBeanAndResources;
+import com.artronics.sdwn.controller.config.SdwnBaseConfig;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {MapUpdaterRegisterSinkTest.MapUpdaterBeanConfig.class,
-        SimpleBeanAndResources.class,
+        SdwnBaseConfig.class,
         MockRepoBeanConfig.class})
 public class BaseMapUpdaterTest
 {
