@@ -8,6 +8,7 @@ import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -40,10 +41,11 @@ public class SdwnControllerImpl implements SdwnController
         packLst.start();
     }
 
+    @Transactional
     public void addPacket(PacketEntity packet)
     {
         log.debug("Persisting Packet...");
-        PacketEntity persistedPacket = packetRepo.save(packet);
+        PacketEntity persistedPacket = packetRepo.create(packet,packet.getDevice().getId());
 
     }
 
