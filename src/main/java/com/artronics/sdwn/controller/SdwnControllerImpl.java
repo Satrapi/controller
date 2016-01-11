@@ -1,8 +1,7 @@
 package com.artronics.sdwn.controller;
 
-import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
+import com.artronics.sdwn.controller.map.MapUpdater;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
-import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import org.apache.log4j.Logger;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
 @Component
@@ -22,13 +19,10 @@ public class SdwnControllerImpl implements SdwnController
 
     private BlockingQueue<PacketEntity> packetQueue;
 
-    private Map<Long, DeviceConnectionService> devices = new HashMap<>();
-
-    private DeviceConnectionRepo deviceRepo;
-
-    private SdwnControllerEntity controllerEntity;
+    private MapUpdater mapUpdater;
 
     private PacketRepo packetRepo;
+
     private SdwnControllerRepo controllerRepo;
 
     private volatile boolean isStarted = false;
@@ -47,6 +41,7 @@ public class SdwnControllerImpl implements SdwnController
         log.debug("Persisting Packet...");
         PacketEntity persistedPacket = packetRepo.create(packet,packet.getDevice().getId());
 
+        mapUpdater.addPacket(persistedPacket);
     }
 
     @Override
@@ -63,23 +58,9 @@ public class SdwnControllerImpl implements SdwnController
     }
 
     @Autowired
-    public void setControllerEntity(
-            SdwnControllerEntity controllerEntity)
+    public void setMapUpdater(MapUpdater mapUpdater)
     {
-        this.controllerEntity = controllerEntity;
-    }
-
-    @Autowired
-    public void setDeviceRepo(DeviceConnectionRepo deviceRepo)
-    {
-        this.deviceRepo = deviceRepo;
-    }
-
-    @Autowired
-    public void setControllerRepo(
-            SdwnControllerRepo controllerRepo)
-    {
-        this.controllerRepo = controllerRepo;
+        this.mapUpdater = mapUpdater;
     }
 
     @Autowired
