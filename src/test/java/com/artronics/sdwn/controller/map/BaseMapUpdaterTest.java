@@ -82,7 +82,6 @@ public class BaseMapUpdaterTest
         @Bean(name = "mapUpdaterTest")
         public MapUpdater getMapUpdater(){
             MapUpdaterImpl mapU = new MapUpdaterImpl();
-            mapU.setNetMap(netMap);
 
             mapU.setWeightCalculator(weightCalculator);
 

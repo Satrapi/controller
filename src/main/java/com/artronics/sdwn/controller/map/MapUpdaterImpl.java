@@ -12,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -26,33 +24,34 @@ public class MapUpdaterImpl implements MapUpdater
     @Autowired
     private NodeLogger nodeLogger;
 
-    private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
+    private SdwnNetworkMap<SdwnNodeEntity> networkMap;
 
-    //This is the map associated with one device.
-    private NetworkMap<SdwnNodeEntity> subMap;
+//    private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
+//
+//    //This is the map associated with one device.
+//    private NetworkMap<SdwnNodeEntity> subMap;
 
     private WeightCalculator weightCalculator;
 
     private NodeRepo nodeRepo;
 
+    private DeviceConnectionEntity device;
+
     @Override
     public SdwnNodeEntity addSink(DeviceConnectionEntity device)
     {
-        log.debug("Update NetworkMap. Adding sink node: "+device.getSinkAddress() + " to NetworkMap.");
+        log.debug("Update NetworkMap. Adding sink node: " + device.getSinkAddress() + " to " +
+                          "NetworkMap.");
 
-        SdwnNodeEntity sink = new SdwnNodeEntity(device.getSinkAddress(),device);
+        SdwnNodeEntity sink = new SdwnNodeEntity(device.getSinkAddress(), device);
         sink.setType(SdwnNodeEntity.Type.SINK);
         sink.setStatus(SdwnNodeEntity.Status.ACTIVE);
 
         sink = nodeRepo.save(sink);
-        log.debug("Sink Node persisted: " +sink.toString());
+        log.debug("Sink Node persisted: " + sink.toString());
         nodeLogger.newNode(sink);
 
-        log.debug("Registering new NetworkMap for this device.");
-        NetworkMap map =  new SdwnNetworkMap();
-        netMap.put(device.getId(),map);
-
-        map.addNode(sink);
+        networkMap.addNode(sink);
 
         return sink;
     }
@@ -60,7 +59,7 @@ public class MapUpdaterImpl implements MapUpdater
     @Override
     public void addPacket(PacketEntity packet)
     {
-        subMap = netMap.get(packet.getDevice().getId());
+        device = packet.getDevice();
 
         switch (packet.getType()) {
             case REPORT:
@@ -77,15 +76,16 @@ public class MapUpdaterImpl implements MapUpdater
         Report report = new Report(packet);
         SdwnNodeEntity srcNode = report.src;
 
-        if (!subMap.contains(srcNode)) {
-            srcNode = addNode(srcNode,deviceId);
+        if (!networkMap.contains(srcNode)) {
+            srcNode = addNode(srcNode);
         }
 
-        Set<SdwnNodeEntity> currentNeighbors = subMap.getNeighbors(srcNode);
+        Set<SdwnNodeEntity> currentNeighbors = networkMap.getNeighbors
+                (srcNode);
         for (Neighbor neighbor : report.neighbors) {
 
-            if (!subMap.contains(neighbor)) {
-                addNode(neighbor,deviceId);
+            if (!networkMap.contains(neighbor)) {
+                addNode(neighbor);
                 connect(srcNode, neighbor);
             }else if (currentNeighbors.contains(neighbor)) {
                 currentNeighbors.remove(neighbor);
@@ -98,46 +98,53 @@ public class MapUpdaterImpl implements MapUpdater
         if (!currentNeighbors.isEmpty()) {
             for (Node neighbor : currentNeighbors) {
                 SdwnNodeEntity nodeEntity = (SdwnNodeEntity) neighbor;
-                subMap.removeLink(srcNode, nodeEntity);
+                networkMap.removeLink(srcNode, nodeEntity);
                 //Look for other link with this node if
                 //there is no link this node just became islan
                 //and should be removed from graph
-                if (subMap.isIsland(nodeEntity)) {
-                    subMap.removeNode(nodeEntity);
+                if (networkMap.isIsland(nodeEntity)) {
+                    networkMap.removeNode(nodeEntity);
                 }
             }
         }
 
     }
+
     private void connect(SdwnNodeEntity node, Neighbor neighbor)
     {
         double weight = weightCalculator.getWeight(node, neighbor);
 //        SdwnNodeEntity n = (SdwnNodeEntity) neighbor ;
-        subMap.addLink(node, neighbor, weight);
+        networkMap.addLink(node, neighbor, weight);
     }
 
-    private SdwnNodeEntity addNode(SdwnNodeEntity node,Long deviceId){
-        log.debug("Persisting new Node: " +node.toString());
-        node=nodeRepo.create(node,deviceId);
-        subMap.addNode(node);
+    private SdwnNodeEntity addNode(SdwnNodeEntity node)
+    {
+        log.debug("Persisting new Node: " + node.toString());
+        node = nodeRepo.create(node, device.getId());
+        networkMap.addNode(node);
         nodeLogger.newNode(node);
 
         return node;
     }
+
+    @Autowired
+    public void setNetworkMap(SdwnNetworkMap<SdwnNodeEntity> networkMap)
+    {
+        this.networkMap = networkMap;
+    }
+
     @Override
-    public NetworkMap<SdwnNodeEntity> getNetworkMap(DeviceConnectionEntity device)
+    public NetworkMap<SdwnNodeEntity> getNetworkMap()
     {
-        NetworkMap<SdwnNodeEntity> map = netMap.get(device.getId());
-
-        return map;
+        return networkMap;
     }
-
-    @Resource(name = "netMap")
-    public void setNetMap(
-            Map<Long, NetworkMap<SdwnNodeEntity>> netMap)
-    {
-        this.netMap = netMap;
-    }
+//
+//    @Resource(name = "netMap")
+//    public void setNetMap(
+//            Map<Long, NetworkMap<SdwnNodeEntity>> netMap)
+//    {
+//        this.netMap = netMap;
+//    }
 
     @Autowired
     public void setWeightCalculator(WeightCalculator weightCalculator)

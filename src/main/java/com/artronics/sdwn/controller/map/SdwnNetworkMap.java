@@ -12,34 +12,34 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class SdwnNetworkMap implements NetworkMap<Node>
+public class SdwnNetworkMap<N extends Node> implements NetworkMap<N>
 {
-    protected final ListenableUndirectedWeightedGraph<Node, DefaultWeightedEdge> graph =
+    protected final ListenableUndirectedWeightedGraph<N, DefaultWeightedEdge> graph =
             new ListenableUndirectedWeightedGraph
-                    <Node, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+                    <N, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 
-    protected final GraphDelegator<Node> graphDelegator = new GraphDelegator<>(graph);
+    protected final GraphDelegator<N> graphDelegator = new GraphDelegator<>(graph);
 
     @Override
-    public void addNode(Node node)
+    public void addNode(N node)
     {
         graph.addVertex(node);
     }
 
     @Override
-    public void removeNode(Node node)
+    public void removeNode(N node)
     {
         graph.removeVertex(node);
     }
 
     @Override
-    public void removeLink(Node srcNode, Node neighbor)
+    public void removeLink(N srcNode, N neighbor)
     {
         graph.removeEdge(srcNode, neighbor);
     }
 
     @Override
-    public void addLink(Node source, Node target, double weight)
+    public void addLink(N source, N target, double weight)
     {
         DefaultWeightedEdge edge = graph.addEdge(source, target);
 
@@ -49,37 +49,37 @@ public class SdwnNetworkMap implements NetworkMap<Node>
     }
 
     @Override
-    public boolean hasLink(Node source, Node target)
+    public boolean hasLink(N source, N target)
     {
         return graph.containsEdge(source, target);
     }
 
     @Override
-    public boolean contains(Node node)
+    public boolean contains(N node)
     {
         return graph.containsVertex(node);
     }
 
     @Override
-    public boolean isIsland(Node neighbor)
+    public boolean isIsland(N neighbor)
     {
         return graphDelegator.isIsland(neighbor);
     }
 
     @Override
-    public Set<Node> getNeighbors(Node node)
+    public Set<N> getNeighbors(N node)
     {
         return graphDelegator.getNeighbors(node);
     }
 
     @Override
-    public List<Node> getAllNodes()
+    public List<N> getAllNodes()
     {
         return new ArrayList<>(graph.vertexSet());
     }
 
     @Override
-    public Graph<Node, DefaultWeightedEdge> getNetworkGraph()
+    public Graph<N, DefaultWeightedEdge> getNetworkGraph()
     {
         return this.graph;
     }

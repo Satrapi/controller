@@ -36,7 +36,6 @@ public class MapUpdaterAddPacketTest extends BaseMapUpdaterTest
         super.setUp();
         when(nodeRepo.save(any(SdwnNodeEntity.class))).thenReturn(sinkNode);
         mapUpdater.addSink(device);
-        map = mapUpdater.getNetworkMap(device);
     }
 
     @Test
@@ -71,9 +70,6 @@ public class MapUpdaterAddPacketTest extends BaseMapUpdaterTest
         addAReport();
         mapUpdater.addPacket(packet);
 
-        NetworkMap<SdwnNodeEntity> actMap = mapUpdater.getNetworkMap(device);
-
-        assertMapEqual(expMap,actMap);
     }
     private void mockNodeRepo(int... addresses){
         for(int add:addresses){

@@ -10,5 +10,5 @@ public interface MapUpdater
 
     void addPacket(PacketEntity packet);
 
-    NetworkMap<SdwnNodeEntity> getNetworkMap(DeviceConnectionEntity device);
+    NetworkMap<SdwnNodeEntity> getNetworkMap();
 }
