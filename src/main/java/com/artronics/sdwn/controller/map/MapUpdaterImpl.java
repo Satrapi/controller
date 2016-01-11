@@ -5,13 +5,12 @@ import com.artronics.sdwn.domain.entities.node.Node;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import org.apache.log4j.Logger;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
 @Component
-@Primary
+//@Primary
 public class MapUpdaterImpl extends AbstractMapUpdater
 {
     private final static Logger log = Logger.getLogger(MapUpdaterImpl.class);
