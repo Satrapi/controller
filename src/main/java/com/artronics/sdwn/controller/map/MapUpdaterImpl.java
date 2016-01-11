@@ -93,6 +93,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
     protected SdwnNodeEntity addNode(SdwnNodeEntity node)
     {
         log.debug("Persisting new Node: " + node.toString());
+        node.setSession(session);
         node = nodeRepo.create(node, device.getId());
         networkMap.addNode(node);
         nodeLogger.newNode(node);

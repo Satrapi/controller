@@ -19,6 +19,7 @@ public class SimpleSessionManager implements SessionManager,DisposableBean
     {
         NetworkSession s = new NetworkSession();
         sessionRepo.save(s);
+        log.debug("Creating new NetwrokSession-> ID: " +s.getId());
 
         return s;
     }
@@ -32,6 +33,7 @@ public class SimpleSessionManager implements SessionManager,DisposableBean
     @Override
     public void destroy() throws Exception
     {
+        log.debug("Expiring NetworkSession.");
         sessionRepo.expire();
     }
 

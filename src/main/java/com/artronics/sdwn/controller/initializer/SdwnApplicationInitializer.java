@@ -1,6 +1,7 @@
 package com.artronics.sdwn.controller.initializer;
 
 import com.artronics.sdwn.controller.SdwnController;
+import com.artronics.sdwn.controller.session.SessionManager;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.repositories.NeighborRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
@@ -19,6 +20,8 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
                                                    DisposableBean
 {
     private final static Logger log = Logger.getLogger(SdwnApplicationInitializer.class);
+
+    private SessionManager sessionManager;
 
     private SdwnController sdwnController;
 
@@ -50,7 +53,14 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
 
         sdwnController.stop();
 
+        sessionManager.close();
+
         neighborRepo.deleteAll();
+    }
+
+    public void setSessionManager(SessionManager sessionManager)
+    {
+        this.sessionManager = sessionManager;
     }
 
     @Autowired

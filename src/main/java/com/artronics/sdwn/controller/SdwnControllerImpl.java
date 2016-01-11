@@ -1,6 +1,7 @@
 package com.artronics.sdwn.controller;
 
 import com.artronics.sdwn.controller.map.MapUpdater;
+import com.artronics.sdwn.domain.entities.NetworkSession;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
@@ -16,6 +17,8 @@ import java.util.concurrent.BlockingQueue;
 public class SdwnControllerImpl implements SdwnController
 {
     private final static Logger log = Logger.getLogger(SdwnControllerImpl.class);
+
+    private NetworkSession session;
 
     private BlockingQueue<PacketEntity> packetQueue;
 
@@ -39,7 +42,8 @@ public class SdwnControllerImpl implements SdwnController
     public void addPacket(PacketEntity packet)
     {
         log.debug("Persisting Packet...");
-        PacketEntity persistedPacket = packetRepo.create(packet,packet.getDevice().getId());
+        packet.setSession(session);
+        PacketEntity persistedPacket = packetRepo.save(packet);
 
         mapUpdater.addPacket(persistedPacket);
     }
@@ -55,6 +59,12 @@ public class SdwnControllerImpl implements SdwnController
             BlockingQueue<PacketEntity> packetQueue)
     {
         this.packetQueue = packetQueue;
+    }
+
+    @Autowired
+    public void setSession(NetworkSession session)
+    {
+        this.session = session;
     }
 
     @Autowired

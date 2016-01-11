@@ -2,6 +2,7 @@ package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.controller.log.NodeLogger;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
+import com.artronics.sdwn.domain.entities.NetworkSession;
 import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
@@ -18,6 +19,8 @@ public abstract class AbstractMapUpdater implements MapUpdater
 
     @Autowired
     protected NodeLogger nodeLogger;
+
+    protected NetworkSession session;
 
     protected SdwnNetworkMap<SdwnNodeEntity> networkMap;
 
@@ -36,6 +39,7 @@ public abstract class AbstractMapUpdater implements MapUpdater
         SdwnNodeEntity sink = new SdwnNodeEntity(device.getSinkAddress(), device);
         sink.setType(SdwnNodeEntity.Type.SINK);
         sink.setStatus(SdwnNodeEntity.Status.ACTIVE);
+        sink.setSession(session);
 
         sink = nodeRepo.save(sink);
         log.debug("Sink Node persisted: " + sink.toString());
@@ -44,6 +48,12 @@ public abstract class AbstractMapUpdater implements MapUpdater
         networkMap.addNode(sink);
 
         return sink;
+    }
+
+    @Autowired
+    public void setSession(NetworkSession session)
+    {
+        this.session = session;
     }
 
     @Autowired

@@ -19,7 +19,8 @@ public class LoadNetworkSession extends SdwnBaseConfig
 
     @Bean(name = "networkSession")
     public NetworkSession getNetworkSession(){
-        return sessionManager.open();
+        NetworkSession s =sessionManager.open();
+        return s;
     }
 
 }
