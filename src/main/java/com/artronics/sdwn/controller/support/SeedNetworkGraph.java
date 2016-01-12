@@ -10,10 +10,12 @@ import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import com.artronics.sdwn.domain.repositories.SessionRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class CreateNodesGraph
+@Component
+public class SeedNetworkGraph
 {
-    private final static Logger log = Logger.getLogger(CreateNodesGraph.class);
+    private final static Logger log = Logger.getLogger(SeedNetworkGraph.class);
     private NetworkSession activeSession = new NetworkSession();
     private NetworkSession expiredSession = new NetworkSession();
 
@@ -40,7 +42,7 @@ public class CreateNodesGraph
     private DeviceConnectionRepo deviceRepo;
     private NodeRepo nodeRepo;
 
-    public void createSimulatedNetwork(){
+    public void seed(){
         controllerRepo.save(controller);
 
         device1.setSdwnController(controller);
@@ -59,6 +61,7 @@ public class CreateNodesGraph
 
         createNetwork(activeSession);
         createNetwork(expiredSession);
+
     }
 
     public void createNetwork(NetworkSession session)
@@ -115,7 +118,7 @@ public class CreateNodesGraph
     }
 
     @Autowired
-    public void setControllerRepo(
+    public void setSdwnControllerRepo(
             SdwnControllerRepo controllerRepo)
     {
         this.controllerRepo = controllerRepo;
@@ -127,4 +130,8 @@ public class CreateNodesGraph
         this.deviceRepo = deviceRepo;
     }
 
+    public NetworkSession getActiveSession()
+    {
+        return activeSession;
+    }
 }

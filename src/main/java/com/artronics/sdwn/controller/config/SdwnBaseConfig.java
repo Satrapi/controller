@@ -6,9 +6,7 @@ import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.util.HashMap;
@@ -17,11 +15,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 @Configuration
-@ComponentScan(basePackages = {"com.artronics.sdwn.controller",
-        "com.artronics.sdwn.domain"},excludeFilters = @ComponentScan.Filter(
-        value= Configuration.class,
-        type = FilterType.ANNOTATION
-))
 public class SdwnBaseConfig
 {
     private final static Logger log = Logger.getLogger(SdwnBaseConfig.class);
