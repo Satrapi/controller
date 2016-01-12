@@ -1,11 +1,6 @@
 package com.artronics.sdwn.controller.map;
 
-import com.artronics.sdwn.controller.map.graph.GraphDelegator;
-import com.artronics.sdwn.controller.map.graph.SdwnGraphDelegator;
-import com.artronics.sdwn.controller.support.SeedNetworkGraph;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,27 +9,15 @@ import java.util.List;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
-public class SdwnNetworkMapTest
+public class SdwnNetworkMapTest extends BaseGraphTest
 {
-    private SeedNetworkGraph seeder = new SeedNetworkGraph();
-    private NetworkMap<SdwnNodeEntity> map;
-    private GraphDelegator<SdwnNodeEntity> graphDelegator;
-    private Graph<SdwnNodeEntity, DefaultWeightedEdge> graph;
-
-    private SdwnNodeEntity node135 = seeder.getNode135();
-    private SdwnNodeEntity node136 = seeder.getNode136();
-    private SdwnNodeEntity node137 = seeder.getNode137();
 
 
+    @Override
     @Before
     public void setUp() throws Exception
     {
-        seeder.seed(false);
-
-        map = seeder.getNetworkMap();
-        graph = map.getNetworkGraph();
-
-        graphDelegator = new SdwnGraphDelegator(graph);
+        super.setUp();
     }
 
     @Test
