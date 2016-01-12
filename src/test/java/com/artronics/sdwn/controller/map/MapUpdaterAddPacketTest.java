@@ -1,7 +1,6 @@
 package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
-import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.helpers.FakePacketFactory;
@@ -18,7 +17,7 @@ public class MapUpdaterAddPacketTest extends BaseMapUpdaterTest
 {
     private FakePacketFactory factory = new FakePacketFactory();
 
-    private NetworkMap<SdwnNodeEntity,Neighbor> map;
+    private NetworkMap<SdwnNodeEntity> map;
 
     private SdwnNodeEntity node;
     private PacketEntity packet;
@@ -66,7 +65,7 @@ public class MapUpdaterAddPacketTest extends BaseMapUpdaterTest
         //neighbors of 35,36,37 . then we compare created graph with expected
 
         mockNodeRepo(0,30,35,36,37);
-        NetworkMap<SdwnNodeEntity,Neighbor> expMap = getDefaultNetworkMap();
+        NetworkMap<SdwnNodeEntity> expMap = getDefaultNetworkMap();
 
         addAReport();
         mapUpdater.addPacket(packet);

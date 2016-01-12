@@ -3,16 +3,12 @@ package com.artronics.sdwn.controller.support;
 import com.artronics.sdwn.controller.map.NetworkMap;
 import com.artronics.sdwn.controller.map.SdwnNetworkMap;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
-import com.artronics.sdwn.domain.entities.node.Neighbor;
-import com.artronics.sdwn.domain.entities.node.SdwnNode;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class SdwnNetMapPrinterTest
 {
-    private static final NetworkMapPrinter<SdwnNodeEntity,Neighbor> printer= new SdwnNetMapPrinter();
+    private static final NetworkMapPrinter<SdwnNodeEntity> printer= new SdwnNetMapPrinter();
 
     @Test
     public void just_print_a_netMap_to_see_the_result(){
@@ -30,7 +26,7 @@ public class SdwnNetMapPrinterTest
         SdwnNodeEntity nei4 = new SdwnNodeEntity(4L,dev2);
         SdwnNodeEntity nei5 = new SdwnNodeEntity(5L,dev2);
 
-        NetworkMap<SdwnNodeEntity,Neighbor> map= new SdwnNetworkMap();
+        NetworkMap<SdwnNodeEntity> map= new SdwnNetworkMap();
         map.addNode(node1);
         map.addNode(node2);
         map.addNode(node3);

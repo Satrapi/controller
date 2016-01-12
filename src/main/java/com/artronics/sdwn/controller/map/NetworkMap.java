@@ -7,9 +7,8 @@ import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 import java.util.List;
-import java.util.Set;
 
-public interface NetworkMap<N extends Node,M extends N> extends GraphDelegator<N,M>
+public interface NetworkMap<N extends Node> extends GraphDelegator<N>
 {
     void addNode(N node);
 
@@ -17,7 +16,7 @@ public interface NetworkMap<N extends Node,M extends N> extends GraphDelegator<N
 
     void addLink(N source, N target, double weight);
 
-    void removeLink(N srcNode, M neighbor);
+    void removeLink(N srcNode, N neighbor);
 
     boolean hasLink(N source, N target);
 

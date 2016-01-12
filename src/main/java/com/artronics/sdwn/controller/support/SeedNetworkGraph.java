@@ -1,10 +1,10 @@
 package com.artronics.sdwn.controller.support;
 
 import com.artronics.sdwn.controller.map.NetworkMap;
+import com.artronics.sdwn.controller.map.SdwnNetworkMap;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.NetworkSession;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
-import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
@@ -45,10 +45,13 @@ public class SeedNetworkGraph
     private NodeRepo nodeRepo;
 
     private boolean persist = false;
-    private NetworkMap<SdwnNodeEntity, Neighbor> networkMap;
+    private NetworkMap<SdwnNodeEntity> networkMap;
 
     public void seed(boolean persist)
     {
+        if (!persist)
+            networkMap =new SdwnNetworkMap();
+
         createNetwork();
         persistNetwork(persist);
 
@@ -171,15 +174,19 @@ public class SeedNetworkGraph
             node number 30 is sameAddNode
             look for code for weight values
             Graph is like
-                        sink|
-                         __   __
-                        |       |
-                     135        30
-                       |___   __|
-                           |  |
-                            136
-                                |
-                                137
+                        sink:0
+                          /   \
+                        w50  w10
+                        /      \
+                     135 --w20-- 30
+                       \         /
+                       w25    w100
+                         \    /
+                          136
+                           |     |
+                          w30
+                          /
+                        137
 
          */
         networkMap.addLink(sink1, node135, 50);
@@ -236,7 +243,7 @@ public class SeedNetworkGraph
 
     @Autowired
     public void setNetworkMap(
-            NetworkMap<SdwnNodeEntity,Neighbor> networkMap)
+            NetworkMap<SdwnNodeEntity> networkMap)
     {
         this.networkMap = networkMap;
     }
@@ -246,4 +253,43 @@ public class SeedNetworkGraph
         return activeSession;
     }
 
+    public NetworkMap<SdwnNodeEntity> getNetworkMap()
+    {
+        return networkMap;
+    }
+
+    public SdwnNodeEntity getNode246()
+    {
+        return node246;
+    }
+
+    public SdwnNodeEntity getNode245()
+    {
+        return node245;
+    }
+
+    public SdwnNodeEntity getNode137()
+    {
+        return node137;
+    }
+
+    public SdwnNodeEntity getNode136()
+    {
+        return node136;
+    }
+
+    public SdwnNodeEntity getNode135()
+    {
+        return node135;
+    }
+
+    public SdwnNodeEntity getSameAddNode2()
+    {
+        return sameAddNode2;
+    }
+
+    public SdwnNodeEntity getSameAddNode1()
+    {
+        return sameAddNode1;
+    }
 }

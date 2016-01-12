@@ -3,7 +3,7 @@ package com.artronics.sdwn.controller.map;
 import com.artronics.sdwn.controller.log.NodeLogger;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.NetworkSession;
-import com.artronics.sdwn.domain.entities.node.Neighbor;
+import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
@@ -22,7 +22,7 @@ public abstract class AbstractMapUpdater implements MapUpdater
 
     protected NetworkSession session;
 
-    protected NetworkMap<SdwnNodeEntity,Neighbor> networkMap;
+    protected NetworkMap<SdwnNodeEntity> networkMap;
 
     protected WeightCalculator weightCalculator;
 
@@ -57,13 +57,13 @@ public abstract class AbstractMapUpdater implements MapUpdater
     }
 
     @Autowired
-    public void setNetworkMap(NetworkMap<SdwnNodeEntity,Neighbor> networkMap)
+    public void setNetworkMap(NetworkMap<SdwnNodeEntity> networkMap)
     {
         this.networkMap = networkMap;
     }
 
     @Override
-    public NetworkMap<SdwnNodeEntity,Neighbor> getNetworkMap()
+    public NetworkMap<SdwnNodeEntity> getNetworkMap()
     {
         return networkMap;
     }
@@ -84,7 +84,7 @@ public abstract class AbstractMapUpdater implements MapUpdater
     {
         protected final SdwnNodeEntity src;
         protected final SdwnNodeEntity dst;
-        protected final Set<Neighbor> neighbors;
+        protected final Set<SdwnNeighbor> neighbors;
 
         public Report(PacketEntity packet)
         {
@@ -92,7 +92,7 @@ public abstract class AbstractMapUpdater implements MapUpdater
             dst = new SdwnNodeEntity(Integer.toUnsignedLong(packet.getDstShortAdd()));
             src.setDevice(packet.getDevice());
             dst.setDevice(packet.getDevice());
-            neighbors = new HashSet<>(Neighbor.createNeighbors(packet));
+            neighbors = new HashSet<>(SdwnNeighbor.createNeighbors(packet));
         }
     }
 }

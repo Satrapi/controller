@@ -1,7 +1,7 @@
 package com.artronics.sdwn.controller.map.graph;
 
 import com.artronics.sdwn.domain.entities.node.Neighbor;
-import com.artronics.sdwn.domain.entities.node.Node;
+import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import org.apache.log4j.Logger;
 import org.jgrapht.Graph;
@@ -11,7 +11,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
-public class SdwnGraphDelegator implements GraphDelegator<SdwnNodeEntity,Neighbor>
+public class SdwnGraphDelegator implements GraphDelegator<SdwnNodeEntity>
 {
     private final static Logger log = Logger.getLogger(SdwnGraphDelegator.class);
 
@@ -53,24 +53,37 @@ public class SdwnGraphDelegator implements GraphDelegator<SdwnNodeEntity,Neighbo
     }
 
     @Override
-    public Set<Neighbor> getNeighbors(SdwnNodeEntity node)
+    public Set<Neighbor<SdwnNodeEntity>> getNeighbors(SdwnNodeEntity node)
     {
         if (!graph.containsVertex(node))
             return null;
 
-        Set<SdwnNodeEntity> nodes = new HashSet<>();
+        Set<SdwnNeighbor> neighbors = new HashSet();
 
         Set<DefaultWeightedEdge> edges = graph.edgesOf(node);
 
         for (DefaultWeightedEdge edge : edges) {
-            nodes.add(graph.getEdgeSource(edge));
-            nodes.add(graph.getEdgeTarget(edge));
+            
+//            SdwnNeighbor srcNode = (SdwnNeighbor)graph.getEdgeSource(edge);
+//            srcNode.setWeight(graph.getEdgeWeight(edge));
+//
+//            SdwnNeighbor dstNode = (SdwnNeighbor)graph.getEdgeTarget(edge);
+//            srcNode.setWeight(graph.getEdgeWeight(edge));
+//
+//            neighbors.add(srcNode);
+//            neighbors.add(dstNode);
         }
 
         //remove node from set. we just need its neighbors
-        nodes.remove(node);
+        neighbors.remove(node);
 
-//        return nodes;
+//        Set<SdwnNeighbor> neighbors = new HashSet<>();
+//        for (SdwnNodeEntity n : nodes.keySet()) {
+//            DefaultWeightedEdge e = nodes.get(n);
+//            SdwnNeighbor neighbor = (SdwnNeighbor) n;
+//            neighbor.setWeight(graph.getEdgeWeight(e));
+//        }
+
         throw new NotImplementedException();
     }
 

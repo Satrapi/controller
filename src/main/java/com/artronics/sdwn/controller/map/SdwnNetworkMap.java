@@ -3,7 +3,6 @@ package com.artronics.sdwn.controller.map;
 import com.artronics.sdwn.controller.map.graph.GraphDelegator;
 import com.artronics.sdwn.controller.map.graph.SdwnGraphDelegator;
 import com.artronics.sdwn.domain.entities.node.Neighbor;
-import com.artronics.sdwn.domain.entities.node.Node;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
@@ -15,13 +14,13 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class SdwnNetworkMap implements NetworkMap<SdwnNodeEntity,Neighbor>
+public class SdwnNetworkMap implements NetworkMap<SdwnNodeEntity>
 {
     protected final ListenableUndirectedWeightedGraph<SdwnNodeEntity, DefaultWeightedEdge> graph =
             new ListenableUndirectedWeightedGraph
                     <SdwnNodeEntity, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 
-    protected final GraphDelegator<SdwnNodeEntity,Neighbor> graphDelegator = new SdwnGraphDelegator(graph);
+    protected final GraphDelegator<SdwnNodeEntity> graphDelegator = new SdwnGraphDelegator(graph);
 
     @Override
     public void addNode(SdwnNodeEntity node)
@@ -36,9 +35,9 @@ public class SdwnNetworkMap implements NetworkMap<SdwnNodeEntity,Neighbor>
     }
 
     @Override
-    public void removeLink(SdwnNodeEntity srcNode, Neighbor neighbor)
+    public void removeLink(SdwnNodeEntity srcNode, SdwnNodeEntity target)
     {
-        graph.removeEdge(srcNode, neighbor);
+        graph.removeEdge(srcNode, target);
     }
 
     @Override
@@ -70,7 +69,7 @@ public class SdwnNetworkMap implements NetworkMap<SdwnNodeEntity,Neighbor>
     }
 
     @Override
-    public Set<Neighbor> getNeighbors(SdwnNodeEntity node)
+    public Set<Neighbor<SdwnNodeEntity>> getNeighbors(SdwnNodeEntity node)
     {
         return graphDelegator.getNeighbors(node);
     }

@@ -1,7 +1,6 @@
 package com.artronics.sdwn.controller.config;
 
 import com.artronics.sdwn.controller.map.NetworkMap;
-import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import org.apache.log4j.Logger;
@@ -40,7 +39,7 @@ public class SdwnBaseConfig
     }
 
     @Bean(name = "netMap")
-    public Map<Long,NetworkMap<SdwnNodeEntity,Neighbor>> getNetMap(){
+    public Map<Long,NetworkMap<SdwnNodeEntity>> getNetMap(){
         return new HashMap<>();
     }
 }

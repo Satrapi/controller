@@ -1,6 +1,7 @@
 package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.domain.entities.node.Neighbor;
+import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import org.apache.log4j.Logger;
@@ -38,7 +39,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
             srcNode = addNode(srcNode);
         }
 
-        Set<Neighbor> currentNeighbors = networkMap.getNeighbors
+        Set<Neighbor<SdwnNodeEntity>> currentNeighbors = networkMap.getNeighbors
                 (srcNode);
 
         compareWithCurrentNeighborSet(report,srcNode,currentNeighbors);
@@ -52,18 +53,18 @@ public class MapUpdaterImpl extends AbstractMapUpdater
                                                  SdwnNodeEntity srcNode,
                                                  Set<?> currentNeighbors){
 
-        for (Neighbor neighbor : report.neighbors) {
-
-            if (!networkMap.contains(neighbor)) {
-                addNode(neighbor);
-                connect(srcNode, neighbor);
-            }else if (currentNeighbors.contains(neighbor)) {
-                currentNeighbors.remove(neighbor);
-                connect(srcNode, neighbor);
-            }else {
-                connect(srcNode, neighbor);
-            }
-        }
+//        for (Neighbor<> neighbor : report.neighbors) {
+//
+//            if (!networkMap.contains(neighbor)) {
+//                addNode(neighbor);
+//                connect(srcNode, neighbor);
+//            }else if (currentNeighbors.contains(neighbor)) {
+//                currentNeighbors.remove(neighbor);
+//                connect(srcNode, neighbor);
+//            }else {
+//                connect(srcNode, neighbor);
+//            }
+//        }
 
     }
 
@@ -83,11 +84,11 @@ public class MapUpdaterImpl extends AbstractMapUpdater
         }
     }
 
-    protected void connect(SdwnNodeEntity node, Neighbor neighbor)
+    protected void connect(SdwnNodeEntity node, SdwnNeighbor neighbor)
     {
         double weight = weightCalculator.getWeight(node, neighbor);
 //        SdwnNodeEntity n = (SdwnNodeEntity) neighbor ;
-        networkMap.addLink(node, neighbor, weight);
+//        networkMap.addLink(node, neighbor, weight);
     }
 
     protected SdwnNodeEntity addNode(SdwnNodeEntity node)

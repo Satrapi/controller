@@ -4,7 +4,6 @@ import com.artronics.sdwn.controller.map.MapUpdater;
 import com.artronics.sdwn.controller.map.NetworkMap;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
-import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
 import org.apache.log4j.Logger;
@@ -23,7 +22,7 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
     private DeviceConnectionRepo deviceRepo;
 
-    private Map<Long,NetworkMap<SdwnNodeEntity,Neighbor>> netMap;
+    private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
 
     private MapUpdater mapUpdater;
 
@@ -70,7 +69,7 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
     @Resource(name = "netMap")
     public void setNetMap(
-            Map<Long, NetworkMap<SdwnNodeEntity,Neighbor>> netMap)
+            Map<Long, NetworkMap<SdwnNodeEntity>> netMap)
     {
         this.netMap = netMap;
     }

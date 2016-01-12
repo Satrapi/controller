@@ -22,7 +22,7 @@ public class PersistenceBasedMapUpdater extends MapUpdaterImpl
             srcNode = addNode(srcNode);
         }
 
-//        Set<Neighbor> persistedNeighbors = neighborRepo.fetchNeighbors(srcNode);
+//        Set<SdwnNeighbor> persistedNeighbors = neighborRepo.fetchNeighbors(srcNode);
 
 //        compareWithCurrentNeighborSet(report,srcNode,persistedNeighbors);
 
