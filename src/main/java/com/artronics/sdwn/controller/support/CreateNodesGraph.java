@@ -58,6 +58,12 @@ public class CreateNodesGraph
         sessionRepo.save(activeSession);
 
         createNetwork(activeSession);
+        createNetwork(expiredSession);
+    }
+
+    public void createNetwork(NetworkSession session)
+    {
+        persistNodes(session);
     }
 
     private void persistNodes(NetworkSession session){
@@ -92,13 +98,9 @@ public class CreateNodesGraph
         /*
             Device1
          */
-        
-    }
-
-    private void createNetwork(NetworkSession activeSession)
-    {
 
     }
+
 
     @Autowired
     public void setSessionRepo(SessionRepo sessionRepo)
