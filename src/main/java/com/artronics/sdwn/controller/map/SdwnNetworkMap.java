@@ -1,7 +1,10 @@
 package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.controller.map.graph.GraphDelegator;
+import com.artronics.sdwn.controller.map.graph.SdwnGraphDelegator;
+import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.Node;
+import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
@@ -12,34 +15,34 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class SdwnNetworkMap<N extends Node> implements NetworkMap<N>
+public class SdwnNetworkMap implements NetworkMap<SdwnNodeEntity,Neighbor>
 {
-    protected final ListenableUndirectedWeightedGraph<N, DefaultWeightedEdge> graph =
+    protected final ListenableUndirectedWeightedGraph<SdwnNodeEntity, DefaultWeightedEdge> graph =
             new ListenableUndirectedWeightedGraph
-                    <N, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+                    <SdwnNodeEntity, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 
-    protected final GraphDelegator<N> graphDelegator = new GraphDelegator<>(graph);
+    protected final GraphDelegator<SdwnNodeEntity,Neighbor> graphDelegator = new SdwnGraphDelegator(graph);
 
     @Override
-    public void addNode(N node)
+    public void addNode(SdwnNodeEntity node)
     {
         graph.addVertex(node);
     }
 
     @Override
-    public void removeNode(N node)
+    public void removeNode(SdwnNodeEntity node)
     {
         graph.removeVertex(node);
     }
 
     @Override
-    public void removeLink(N srcNode, N neighbor)
+    public void removeLink(SdwnNodeEntity srcNode, Neighbor neighbor)
     {
         graph.removeEdge(srcNode, neighbor);
     }
 
     @Override
-    public void addLink(N source, N target, double weight)
+    public void addLink(SdwnNodeEntity source, SdwnNodeEntity target, double weight)
     {
         DefaultWeightedEdge edge = graph.addEdge(source, target);
 
@@ -49,38 +52,50 @@ public class SdwnNetworkMap<N extends Node> implements NetworkMap<N>
     }
 
     @Override
-    public boolean hasLink(N source, N target)
+    public boolean hasLink(SdwnNodeEntity source, SdwnNodeEntity target)
     {
         return graph.containsEdge(source, target);
     }
 
     @Override
-    public boolean contains(N node)
+    public boolean contains(SdwnNodeEntity node)
     {
         return graph.containsVertex(node);
     }
 
     @Override
-    public boolean isIsland(N neighbor)
+    public boolean isIsland(SdwnNodeEntity neighbor)
     {
         return graphDelegator.isIsland(neighbor);
     }
 
     @Override
-    public Set<N> getNeighbors(N node)
+    public Set<Neighbor> getNeighbors(SdwnNodeEntity node)
     {
         return graphDelegator.getNeighbors(node);
     }
 
     @Override
-    public List<N> getAllNodes()
+    public List<SdwnNodeEntity> getAllNodes()
     {
         return new ArrayList<>(graph.vertexSet());
     }
 
     @Override
-    public Graph<N, DefaultWeightedEdge> getNetworkGraph()
+    public Graph<SdwnNodeEntity, DefaultWeightedEdge> getNetworkGraph()
     {
         return this.graph;
+    }
+
+    @Override
+    public List<SdwnNodeEntity> getShortestPath(SdwnNodeEntity source, SdwnNodeEntity target)
+    {
+        return graphDelegator.getShortestPath(source,target);
+    }
+
+    @Override
+    public String toString()
+    {
+        return super.toString();
     }
 }

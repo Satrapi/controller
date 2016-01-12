@@ -34,7 +34,7 @@ public class DbNetworkMapInitializerTest
     @Before
     public void setUp() throws Exception
     {
-        seeder.seed();
+        seeder.seed(true);
     }
 
     @Test

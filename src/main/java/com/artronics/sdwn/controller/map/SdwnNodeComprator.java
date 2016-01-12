@@ -16,7 +16,7 @@ public class SdwnNodeComprator implements Comparator<SdwnNodeEntity>
             return 0;
 
         Long id1 = o1.getDevice()==null ? 0:o1.getDevice().getId();
-        Long id2 = o1.getDevice()==null ? 0:o2.getDevice().getId();
+        Long id2 = o2.getDevice()==null ? 0:o2.getDevice().getId();
 
         if (id1>id2)
             return 1;

@@ -22,7 +22,7 @@ public abstract class AbstractMapUpdater implements MapUpdater
 
     protected NetworkSession session;
 
-    protected SdwnNetworkMap<SdwnNodeEntity> networkMap;
+    protected NetworkMap<SdwnNodeEntity,Neighbor> networkMap;
 
     protected WeightCalculator weightCalculator;
 
@@ -57,13 +57,13 @@ public abstract class AbstractMapUpdater implements MapUpdater
     }
 
     @Autowired
-    public void setNetworkMap(SdwnNetworkMap<SdwnNodeEntity> networkMap)
+    public void setNetworkMap(NetworkMap<SdwnNodeEntity,Neighbor> networkMap)
     {
         this.networkMap = networkMap;
     }
 
     @Override
-    public NetworkMap<SdwnNodeEntity> getNetworkMap()
+    public NetworkMap<SdwnNodeEntity,Neighbor> getNetworkMap()
     {
         return networkMap;
     }

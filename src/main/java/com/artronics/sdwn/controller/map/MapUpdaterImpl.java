@@ -38,7 +38,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
             srcNode = addNode(srcNode);
         }
 
-        Set<SdwnNodeEntity> currentNeighbors = networkMap.getNeighbors
+        Set<Neighbor> currentNeighbors = networkMap.getNeighbors
                 (srcNode);
 
         compareWithCurrentNeighborSet(report,srcNode,currentNeighbors);
@@ -72,7 +72,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
         while (it.hasNext()){
             SdwnNodeEntity nodeEntity = (SdwnNodeEntity) it.next();
 
-            networkMap.removeLink(srcNode, nodeEntity);
+//            networkMap.removeLink(srcNode, nodeEntity);
             //Look for other link with this node if
             //there is no link this node just became islan
             //and should be removed from graph

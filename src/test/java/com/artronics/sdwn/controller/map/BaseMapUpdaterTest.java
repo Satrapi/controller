@@ -4,6 +4,7 @@ import com.artronics.sdwn.controller.config.MockRepoBeanConfig;
 import com.artronics.sdwn.controller.config.SdwnBaseConfig;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
+import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import org.junit.Before;
@@ -39,7 +40,7 @@ public class BaseMapUpdaterTest
     protected MapUpdater mapUpdater;
 
     @Resource(name = "netMap")
-    protected Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
+    protected Map<Long,NetworkMap<SdwnNodeEntity,Neighbor>> netMap;
 
     @Autowired
     @Qualifier("mockNodeRepo")
@@ -69,7 +70,7 @@ public class BaseMapUpdaterTest
     public static class MapUpdaterBeanConfig{
 
         @Resource(name = "netMap")
-        private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
+        private Map<Long,NetworkMap<SdwnNodeEntity,Neighbor>> netMap;
 
         @Autowired
         @Qualifier("mockNodeRepo")
