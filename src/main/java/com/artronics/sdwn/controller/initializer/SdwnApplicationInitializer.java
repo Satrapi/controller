@@ -3,7 +3,6 @@ package com.artronics.sdwn.controller.initializer;
 import com.artronics.sdwn.controller.SdwnController;
 import com.artronics.sdwn.controller.session.SessionManager;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
-import com.artronics.sdwn.domain.repositories.NeighborRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
@@ -29,8 +28,6 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
 
     private SdwnControllerRepo controllerRepo;
 
-    private NeighborRepo neighborRepo;
-
     @Override
     public void run(ApplicationArguments args) throws Exception
     {
@@ -41,7 +38,6 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
     public void onApplicationEvent(ContextRefreshedEvent event)
     {
     }
-
 
     @Override
     public void destroy() throws Exception
@@ -54,8 +50,6 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
         sdwnController.stop();
 
         sessionManager.close();
-
-        neighborRepo.deleteAll();
     }
 
     public void setSessionManager(SessionManager sessionManager)
@@ -81,12 +75,6 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
             SdwnControllerRepo controllerRepo)
     {
         this.controllerRepo = controllerRepo;
-    }
-
-    @Autowired
-    public void setNeighborRepo(NeighborRepo neighborRepo)
-    {
-        this.neighborRepo = neighborRepo;
     }
 
 }
