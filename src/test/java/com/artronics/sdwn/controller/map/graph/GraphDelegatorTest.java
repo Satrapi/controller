@@ -3,22 +3,26 @@ package com.artronics.sdwn.controller.map.graph;
 
 import com.artronics.sdwn.controller.map.NetworkMap;
 import com.artronics.sdwn.controller.support.SeedNetworkGraph;
+import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
+import org.jgrapht.Graph;
+import org.jgrapht.graph.DefaultWeightedEdge;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 public class GraphDelegatorTest
 {
     private SeedNetworkGraph seeder = new SeedNetworkGraph();
     private NetworkMap<SdwnNodeEntity> map;
     private GraphDelegator<SdwnNodeEntity> graphDelegator;
+    private Graph<SdwnNodeEntity, DefaultWeightedEdge> graph;
 
     @Before
     public void setUp() throws Exception
@@ -26,7 +30,9 @@ public class GraphDelegatorTest
         seeder.seed(false);
 
         map = seeder.getNetworkMap();
-        graphDelegator = new SdwnGraphDelegator(map.getNetworkGraph());
+        graph = map.getNetworkGraph();
+
+        graphDelegator = new SdwnGraphDelegator(graph);
     }
 
     @Test
@@ -46,40 +52,52 @@ public class GraphDelegatorTest
     @Test
     public void it_should_return_a_set_of_neighbors_not_containing_itself()
     {
-        SdwnNodeEntity node137 = seeder.getNode137();
-        Set<Neighbor<SdwnNodeEntity>> nodes = graphDelegator.getNeighbors(node137);
+        SdwnNodeEntity node135 = seeder.getNode135();
+        SdwnNodeEntity node136 = seeder.getNode136();
+        SdwnNodeEntity node30 = seeder.getSameAddNode1();
+        SdwnNodeEntity node0 = seeder.getSink1();
+
+        Set<Neighbor<SdwnNodeEntity>> neighbors = graphDelegator.getNeighbors(node135);
+
+        Set<SdwnNodeEntity> nodes = new HashSet<>();
+        for (Neighbor<SdwnNodeEntity> neighbor : neighbors) {
+            nodes.add(neighbor.getNode());
+        }
 
         //should not contain itself
-        assertFalse(nodes.contains(node137));
+        assertFalse(nodes.contains(node135));
 
-//        assertTrue(nodes.contains(node0));
-//        assertTrue(nodes.contains(node1));
-//        assertFalse(nodes.contains(node3));
+        assertTrue(nodes.contains(node30));
+        assertTrue(nodes.contains(node0));
+        assertTrue(nodes.contains(node136));
     }
-//
-//    @Test
-//    public void it_should_return_null_if_node_doesnt_exist()
-//    {
-//        assertNull(graphHelper.getNeighbors(new SimpleNode(3432L)));
-//    }
-//
-//    @Test
-//    public void it_should_return_empty_set_if_node_has_no_neighbors()
-//    {
-//        SimpleNode node4 = new SimpleNode(4L);
-//        graph.addVertex(node4);
-//        Set<SimpleNode> nodes = graphHelper.getNeighbors(node4);
-//        assertThat(nodes.size(), equalTo(0));
-//    }
-//
-//    @Test
-//    public void test_isIsland()
-//    {
-//        SimpleNode node4 = new SimpleNode(4L);
-//        graph.addVertex(node4);
-//
-//        assertTrue(graphHelper.isIsland(node4));
-//        assertFalse(graphHelper.isIsland(node0));
-//    }
+
+    @Test
+    public void it_should_return_null_if_node_doesnt_exist()
+    {
+        SdwnNodeEntity node = new SdwnNodeEntity(3432L,new DeviceConnectionEntity(34L));
+        assertNull(graphDelegator.getNeighbors(node));
+    }
+
+    @Test
+    public void it_should_return_empty_set_if_node_has_no_neighbors()
+    {
+        SdwnNodeEntity node = new SdwnNodeEntity(3432L,seeder.getDevice1());
+        graph.addVertex(node);
+        Set<Neighbor<SdwnNodeEntity>> nodes = graphDelegator.getNeighbors(node);
+        assertThat(nodes.size(), equalTo(0));
+    }
+
+    @Test
+    public void test_isIsland()
+    {
+        SdwnNodeEntity node = new SdwnNodeEntity(3432L,seeder.getDevice1());
+        graph.addVertex(node);
+        SdwnNodeEntity node135 = seeder.getNode135();
+
+
+        assertTrue(graphDelegator.isIsland(node));
+        assertFalse(graphDelegator.isIsland(node135));
+    }
 
 }

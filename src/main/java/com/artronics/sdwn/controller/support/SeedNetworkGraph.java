@@ -253,9 +253,24 @@ public class SeedNetworkGraph
         return activeSession;
     }
 
+    public SdwnNodeEntity getSink1()
+    {
+        return sink1;
+    }
+
+    public SdwnNodeEntity getSink2()
+    {
+        return sink2;
+    }
+
     public NetworkMap<SdwnNodeEntity> getNetworkMap()
     {
         return networkMap;
+    }
+
+    public DeviceConnectionEntity getDevice1()
+    {
+        return device1;
     }
 
     public SdwnNodeEntity getNode246()

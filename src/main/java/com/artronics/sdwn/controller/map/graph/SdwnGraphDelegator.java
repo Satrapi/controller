@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
@@ -58,33 +57,29 @@ public class SdwnGraphDelegator implements GraphDelegator<SdwnNodeEntity>
         if (!graph.containsVertex(node))
             return null;
 
-        Set<SdwnNeighbor> neighbors = new HashSet();
+        Map<SdwnNodeEntity,DefaultWeightedEdge> nodes = new HashMap<>();
 
         Set<DefaultWeightedEdge> edges = graph.edgesOf(node);
 
         for (DefaultWeightedEdge edge : edges) {
-            
-//            SdwnNeighbor srcNode = (SdwnNeighbor)graph.getEdgeSource(edge);
-//            srcNode.setWeight(graph.getEdgeWeight(edge));
-//
-//            SdwnNeighbor dstNode = (SdwnNeighbor)graph.getEdgeTarget(edge);
-//            srcNode.setWeight(graph.getEdgeWeight(edge));
-//
-//            neighbors.add(srcNode);
-//            neighbors.add(dstNode);
+            SdwnNodeEntity srcNode = graph.getEdgeSource(edge);
+            SdwnNodeEntity dstNode = graph.getEdgeTarget(edge);
+
+            nodes.put(srcNode,edge);
+            nodes.put(dstNode,edge);
         }
 
         //remove node from set. we just need its neighbors
-        neighbors.remove(node);
+        nodes.remove(node);
 
-//        Set<SdwnNeighbor> neighbors = new HashSet<>();
-//        for (SdwnNodeEntity n : nodes.keySet()) {
-//            DefaultWeightedEdge e = nodes.get(n);
-//            SdwnNeighbor neighbor = (SdwnNeighbor) n;
-//            neighbor.setWeight(graph.getEdgeWeight(e));
-//        }
+        Set<Neighbor<SdwnNodeEntity>> neighbors = new HashSet();
+        for (SdwnNodeEntity n : nodes.keySet()) {
+            DefaultWeightedEdge e = nodes.get(n);
+            Neighbor<SdwnNodeEntity> neighbor = new SdwnNeighbor(n,graph.getEdgeWeight(e));
+            neighbors.add(neighbor);
+        }
 
-        throw new NotImplementedException();
+        return neighbors;
     }
 
     @Override
