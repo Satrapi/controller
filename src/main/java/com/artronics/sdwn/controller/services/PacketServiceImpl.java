@@ -1,6 +1,7 @@
 package com.artronics.sdwn.controller.services;
 
 import com.artronics.sdwn.controller.map.NetworkMap;
+import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 @Component
@@ -36,6 +38,7 @@ public class PacketServiceImpl implements PacketService
     private void processReportPacket(PacketEntity packet)
     {
         nodeRepo.persist(packet.getSrcNode());
+        Set<SdwnNeighbor> neighbors = packet.getSrcNode().getNeighbors();
     }
 
     @Autowired
