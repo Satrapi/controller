@@ -16,7 +16,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
     private final static Logger log = Logger.getLogger(MapUpdaterImpl.class);
 
     @Override
-    public void addPacket(PacketEntity packet)
+    public PacketEntity addPacket(PacketEntity packet)
     {
         device = packet.getDevice();
 
@@ -26,14 +26,14 @@ public class MapUpdaterImpl extends AbstractMapUpdater
                 break;
         }
 
+        return packet;
     }
 
     protected void processReportPacket(PacketEntity packet)
     {
         Long deviceId = packet.getDevice().getId();
 
-        Report report = new Report(packet);
-        SdwnNodeEntity srcNode = report.src;
+        SdwnNodeEntity srcNode = packet.getSrcNode();
 
         if (!networkMap.contains(srcNode)) {
             srcNode = addNode(srcNode);
@@ -93,9 +93,8 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
     protected SdwnNodeEntity addNode(SdwnNodeEntity node)
     {
-        log.debug("Persisting new Node: " + node.toString());
         node.setSession(session);
-        node = nodeRepo.create(node, device.getId());
+        node = nodeRepo.persist(node);
         networkMap.addNode(node);
         nodeLogger.newNode(node);
 

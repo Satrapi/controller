@@ -41,11 +41,12 @@ public class SdwnControllerImpl implements SdwnController
     @Transactional
     public void addPacket(PacketEntity packet)
     {
-        log.debug("Persisting Packet...");
         packet.setSession(session);
-        PacketEntity persistedPacket = packetRepo.save(packet);
 
-        mapUpdater.addPacket(persistedPacket);
+        packet =mapUpdater.addPacket(packet);
+
+        log.debug("Persisting Packet...");
+        PacketEntity persistedPacket = packetRepo.save(packet);
     }
 
     @Override
