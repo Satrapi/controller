@@ -41,8 +41,6 @@ public class SdwnControllerImpl implements SdwnController
     @Transactional
     public void addPacket(PacketEntity packet)
     {
-        packet.setSession(session);
-
         packet =mapUpdater.addPacket(packet);
 
         log.debug("Persisting Packet...");

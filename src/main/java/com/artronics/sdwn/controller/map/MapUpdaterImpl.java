@@ -31,27 +31,24 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
     protected void processReportPacket(PacketEntity packet)
     {
-        Long deviceId = packet.getDevice().getId();
-
         SdwnNodeEntity srcNode = packet.getSrcNode();
 
-        if (!networkMap.contains(srcNode)) {
-            srcNode = addNode(srcNode);
-        }
+        Set<Neighbor<SdwnNodeEntity>> currentNeighbors
+                = networkMap.getNeighbors(srcNode);
+        Set<SdwnNeighbor> preNeighbors =
+                nodeRepo.getNeighbors(srcNode);
 
-        Set<Neighbor<SdwnNodeEntity>> currentNeighbors = networkMap.getNeighbors
-                (srcNode);
-
-        compareWithCurrentNeighborSet(report,srcNode,currentNeighbors);
+                compareWithCurrentNeighborSet(srcNode, currentNeighbors,preNeighbors);
 
         if (!currentNeighbors.isEmpty()) {
-            removeDroppedLinks(srcNode,currentNeighbors);
+            removeDroppedLinks(srcNode, currentNeighbors);
         }
     }
 
-    protected void compareWithCurrentNeighborSet(Report report,
-                                                 SdwnNodeEntity srcNode,
-                                                 Set<?> currentNeighbors){
+    protected void compareWithCurrentNeighborSet(SdwnNodeEntity srcNode,
+                                                 Set<Neighbor<SdwnNodeEntity>> currentNeighbors,
+                                                 Set<SdwnNeighbor> preNeighbors)
+    {
 
 //        for (Neighbor<> neighbor : report.neighbors) {
 //
@@ -68,9 +65,10 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
     }
 
-    protected void removeDroppedLinks(SdwnNodeEntity srcNode,Set<?> remainNeighbors){
+    protected void removeDroppedLinks(SdwnNodeEntity srcNode, Set<?> remainNeighbors)
+    {
         Iterator it = remainNeighbors.iterator();
-        while (it.hasNext()){
+        while (it.hasNext()) {
             SdwnNodeEntity nodeEntity = (SdwnNodeEntity) it.next();
 
 //            networkMap.removeLink(srcNode, nodeEntity);
@@ -93,7 +91,6 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
     protected SdwnNodeEntity addNode(SdwnNodeEntity node)
     {
-        node.setSession(session);
         node = nodeRepo.persist(node);
         networkMap.addNode(node);
         nodeLogger.newNode(node);

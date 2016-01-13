@@ -37,9 +37,10 @@ public class PacketServiceImpl implements PacketService
 
     private void processReportPacket(PacketEntity packet)
     {
-        nodeRepo.persist(packet.getSrcNode());
+        packet.setSrcNode(
+                nodeRepo.persist(packet.getSrcNode()));
 
-        Set<SdwnNeighbor> neighbors = packet.getSrcNode().getNeighbors();
+        Set<SdwnNeighbor> neighbors = SdwnNeighbor.createNeighbors(packet);
 
         for (SdwnNeighbor neighbor : neighbors) {
             SdwnNodeEntity node = neighbor.getNode();
