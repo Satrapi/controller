@@ -1,9 +1,9 @@
 package com.artronics.sdwn.controller.initializer;
 
 import com.artronics.sdwn.controller.SdwnController;
-import com.artronics.sdwn.controller.session.SessionManager;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
+import com.artronics.sdwn.domain.session.SessionManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
