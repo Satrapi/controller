@@ -27,9 +27,10 @@ public class SdwnNodeComprator implements Comparator<SdwnNodeEntity>
             Long add1 = o1.getAddress();
             Long add2 = o2.getAddress();
 
-            if (add1>add2)
+            if (o1.getType() == SdwnNodeEntity.Type.SINK || add1>add2)
                 return 1;
-            if (add1<add2)
+
+            if (o2.getType() == SdwnNodeEntity.Type.SINK || add1<add2)
                 return -1;
         }
 
