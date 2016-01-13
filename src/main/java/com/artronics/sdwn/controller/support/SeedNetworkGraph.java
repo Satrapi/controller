@@ -57,6 +57,8 @@ public class SeedNetworkGraph
 
         if (persist) {
             createNodes(expiredSession);
+//            persistNodes(persist);
+            sessionRepo.save(expiredSession);
         }
         createNodes(activeSession);
 

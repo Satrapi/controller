@@ -1,6 +1,8 @@
 package com.artronics.sdwn.controller.initializer;
 
 import com.artronics.sdwn.controller.config.SdwnBaseConfig;
+import com.artronics.sdwn.controller.map.BaseGraphTest;
+import com.artronics.sdwn.controller.map.graph.SdwnGraphDelegator;
 import com.artronics.sdwn.controller.support.SeedNetworkGraph;
 import com.artronics.sdwn.domain.config.PersistenceConfigTest;
 import com.artronics.sdwn.domain.entities.NetworkSession;
@@ -22,7 +24,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
         DbNetworkMapInitializerTest.MapInitializerConfig.class,
 })
 @TestPropertySource("classpath:application-defaults-test.properties")
-public class DbNetworkMapInitializerTest
+public class DbNetworkMapInitializerTest extends BaseGraphTest
 {
     @Autowired
     private SeedNetworkGraph seeder ;
@@ -31,10 +33,16 @@ public class DbNetworkMapInitializerTest
     private NetworkMapInitializer mapInitializer;
 
 
+    @Override
     @Before
     public void setUp() throws Exception
     {
         seeder.seed(true);
+
+        map = seeder.getNetworkMap();
+        graph = map.getNetworkGraph();
+
+        graphDelegator = new SdwnGraphDelegator(graph);
     }
 
     @Test
