@@ -83,6 +83,8 @@ public class SeedNetworkGraph
     {
         sink1.setSession(session);
         sink2.setSession(session);
+        sink1.setType(SdwnNodeEntity.Type.SINK);
+        sink2.setType(SdwnNodeEntity.Type.SINK);
 
         sameAddNode1.setSession(session);
         sameAddNode2.setSession(session);

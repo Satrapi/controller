@@ -21,7 +21,7 @@ public class SdwnNetMapPrinter implements NetworkMapPrinter<SdwnNodeEntity>
 
         String s = "\n";
         s += device == null ? "\nDevice: null" : device.toString();
-        s += "\n";
+        s += "\n\n";
 
         for (SdwnNodeEntity node : nodes) {
             if (!node.getDevice().equals(device))
@@ -34,7 +34,7 @@ public class SdwnNetMapPrinter implements NetworkMapPrinter<SdwnNodeEntity>
             for (Neighbor<SdwnNodeEntity> neighbor : neighbors) {
                 SdwnNodeEntity n = neighbor.getNode();
                 Long neighborAdd = n.getAddress();
-                s += "\t\t" + formatNeighbor(nodeAdd, neighbor.getWeight(), neighborAdd) + "\n";
+                s += "\t\t" + formatNeighbor(node, neighbor.getWeight(), neighbor.getNode()) + "\n";
             }
         }
 
@@ -52,26 +52,31 @@ public class SdwnNetMapPrinter implements NetworkMapPrinter<SdwnNodeEntity>
         for (SdwnNodeEntity node : nodes) {
             if (!node.getDevice().equals(device)) {
                 device = node.getDevice();
+                s+="\n";
                 s += device == null ? "\nDevice: null" : device.toString();
-                s += "\n";
+                s += "\n\\\n";
             }
             Long nodeAdd = node.getAddress();
-            s += "\t" + "Node: " + nodeAdd + "\n";
+            s += " \\_" + node.toString() + "\n";
 
             Set<Neighbor<SdwnNodeEntity>> neighbors = map.getNeighbors(node);
             for (Neighbor<SdwnNodeEntity> neighbor : neighbors) {
                 SdwnNodeEntity n = neighbor.getNode();
                 Long neighborAdd = n.getAddress();
-                s += "\t\t" + formatNeighbor(nodeAdd, neighbor.getWeight(), neighborAdd) + "\n";
+                s += " |\t\t" + formatNeighbor(node, neighbor.getWeight(), neighbor.getNode()) + "\n";
             }
+            s+=" |\n";
 
         }
 
         return s;
     }
 
-    static String formatNeighbor(Long nodeAdd, Double weight, Long neiAdd)
+    static String formatNeighbor(SdwnNodeEntity n1, Double weight, SdwnNodeEntity n2)
     {
-        return String.format("Node: %-5d <---[ %-5.0f ]---> Node: %-5d", nodeAdd, weight, neiAdd);
+        String s = n1.toString();
+        s+=String.format(" <---[ %-5.0f ]---> " ,weight);
+        s += n2.toString();
+        return s;
     }
 }
