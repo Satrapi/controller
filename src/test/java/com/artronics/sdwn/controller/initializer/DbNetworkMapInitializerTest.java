@@ -3,7 +3,7 @@ package com.artronics.sdwn.controller.initializer;
 import com.artronics.sdwn.controller.config.SdwnBaseConfig;
 import com.artronics.sdwn.controller.map.BaseGraphTest;
 import com.artronics.sdwn.controller.map.graph.SdwnGraphDelegator;
-import com.artronics.sdwn.controller.support.SeedNetworkGraph;
+import com.artronics.sdwn.controller.support.SeedNetworkGraphAndMap;
 import com.artronics.sdwn.domain.config.PersistenceConfigTest;
 import com.artronics.sdwn.domain.entities.NetworkSession;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class DbNetworkMapInitializerTest extends BaseGraphTest
 {
     @Autowired
-    private SeedNetworkGraph seeder ;
+    private SeedNetworkGraphAndMap seeder ;
 
     @Autowired
     private NetworkMapInitializer mapInitializer;
@@ -60,7 +60,7 @@ public class DbNetworkMapInitializerTest extends BaseGraphTest
     public static class MapInitializerConfig{
 
         @Autowired
-        SeedNetworkGraph seeder;
+        SeedNetworkGraphAndMap seeder;
 
         @Bean
         public NetworkSession getSession(){
