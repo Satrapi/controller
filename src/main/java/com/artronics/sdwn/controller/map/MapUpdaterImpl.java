@@ -7,6 +7,7 @@ import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import org.apache.log4j.Logger;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 //@Component
@@ -35,10 +36,10 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
         Set<Neighbor<SdwnNodeEntity>> currentNeighbors
                 = networkMap.getNeighbors(srcNode);
-        Set<SdwnNeighbor> preNeighbors =
-                nodeRepo.getNeighbors(srcNode);
+        List<SdwnNeighbor> preNeighbors =
+                neighborRepo.getNeighbors(srcNode);
 
-                compareWithCurrentNeighborSet(srcNode, currentNeighbors,preNeighbors);
+        compareWithCurrentNeighborSet(srcNode, currentNeighbors, preNeighbors);
 
         if (!currentNeighbors.isEmpty()) {
             removeDroppedLinks(srcNode, currentNeighbors);
@@ -47,7 +48,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
     protected void compareWithCurrentNeighborSet(SdwnNodeEntity srcNode,
                                                  Set<Neighbor<SdwnNodeEntity>> currentNeighbors,
-                                                 Set<SdwnNeighbor> preNeighbors)
+                                                 List<SdwnNeighbor> preNeighbors)
     {
 
 //        for (Neighbor<> neighbor : report.neighbors) {
