@@ -14,7 +14,7 @@ public class RssiSimpleWeightCalculatorTest
     WeightCalculator weightCalculator = new RssiSimpleWeightCalculator();
     SdwnNodeEntity node = new SdwnNodeEntity(10L);
     SdwnNodeEntity ne = new SdwnNodeEntity(2L);
-    DeviceConnectionEntity device = new DeviceConnectionEntity(1L,"foo",10L);
+    DeviceConnectionEntity device = new DeviceConnectionEntity(1L,"foo",node);
     Neighbor<SdwnNodeEntity> neighbor = new SdwnNeighbor(node,100);
 
     @Test

@@ -48,16 +48,7 @@ public class BaseMapUpdaterTest
     @Before
     public void setUp() throws Exception
     {
-        controller = new SdwnControllerEntity(CTRL_URL);
-        controller.setId(1L);
-        device = new DeviceConnectionEntity(DEVICE_URL);
-        device.setId(2L);
-
-        device.setSinkAddress(SINK_ADD);
-        device.setSdwnController(controller);
-
-        sinkNode.setDevice(device);
-        sinkNode.setId(3L);
+        
     }
     @Configuration
     @ComponentScan(basePackages = {"com.artronics.sdwn.controller",
