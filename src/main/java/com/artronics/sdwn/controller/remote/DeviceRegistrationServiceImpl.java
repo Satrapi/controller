@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Component
@@ -37,36 +38,40 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     }
 
     @Transactional
-    private DeviceConnectionEntity persistDeviceAndSink(DeviceConnectionEntity device,
-                                                        SdwnNodeEntity sink)
+    private DeviceConnectionEntity persistDeviceAndSink(@NotNull DeviceConnectionEntity device,
+                                                        @NotNull SdwnNodeEntity sink)
     {
         log.debug("Registering new DeviceConnection: "+device.toString());
         DeviceConnectionEntity persistedDev;
 
         DeviceConnectionEntity dev = deviceRepo.findByUrl(device.getUrl());
+        sink.setStatus(SdwnNodeEntity.Status.IDLE);
 
         if (dev == null) {
             log.debug("No DeviceConnection found. Creating one.");
             persistedDev = deviceRepo.create(device, controllerEntity);
 
-            sink = device.getSinkNode();
             sink.setDevice(persistedDev);
-
             sink = nodeRepo.persist(sink);
+            log.debug("Sink Node persisted: " + sink.toString());
 
             persistedDev.setSinkNode(sink);
             deviceRepo.save(persistedDev);
+
         }else {
             log.debug("Found DeviceConnection. Updating ");
             dev.setSdwnController(controllerEntity);
-            sink = dev.getSinkNode();
+            if (dev.getSinkNode()==null){
+                sink.setDevice(dev);
+                nodeRepo.persist(sink);
+                log.debug("Sink Node persisted: " + sink.toString());
+            }
             persistedDev = deviceRepo.create(dev, controllerEntity);
         }
 
         mapUpdater.addSink(sink);
 
-        log.debug("Device persisted: " + persistedDev.toString());
-
+        log.debug("Device persisted: " + persistedDev.toString() + " ->associated " +sink.toString());
 
         return persistedDev;
     }
