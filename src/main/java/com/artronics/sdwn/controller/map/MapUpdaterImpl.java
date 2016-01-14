@@ -5,12 +5,13 @@ import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-//@Component
+@Component
 //@Primary
 public class MapUpdaterImpl extends AbstractMapUpdater
 {

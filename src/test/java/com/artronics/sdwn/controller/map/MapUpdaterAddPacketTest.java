@@ -85,7 +85,7 @@ public class MapUpdaterAddPacketTest extends BaseMapUpdaterTest
     private PacketEntity createReport(int src, DeviceConnectionEntity device,int... nAdd){
         List<Integer> buff = factory.createRawReportPacket(src,SINK_ADD.intValue(),factory.createNeighbors(nAdd));
 
-        PacketEntity packet = PacketEntity.create(buff);
+        PacketEntity packet = PacketEntity.create(buff,device);
         packet.setId(1L);
 
         packet.setDevice(device);

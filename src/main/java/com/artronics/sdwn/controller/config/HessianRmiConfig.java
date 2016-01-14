@@ -3,6 +3,8 @@ package com.artronics.sdwn.controller.config;
 import com.artronics.sdwn.controller.SdwnController;
 import com.artronics.sdwn.controller.remote.DeviceRegistrationService;
 import com.artronics.sdwn.controller.remote.DeviceRegistrationServiceImpl;
+import com.artronics.sdwn.controller.remote.NodeRegistrationService;
+import com.artronics.sdwn.controller.remote.NodeRegistrationServiceImpl;
 import com.artronics.sdwn.controller.services.PacketService;
 import com.artronics.sdwn.controller.services.PacketServiceImpl;
 import org.apache.log4j.Logger;
@@ -23,16 +25,24 @@ public class HessianRmiConfig
 
     private DeviceRegistrationService registrationService;
     private PacketService packetService;
+    private NodeRegistrationService nodeRegistrationService;
 
     @PostConstruct
     public void initBean(){
         this.registrationService = new DeviceRegistrationServiceImpl();
+        this.nodeRegistrationService = new NodeRegistrationServiceImpl();
         this.packetService = new PacketServiceImpl();
     }
 
     @Bean
     public DeviceRegistrationService getRegistrationService(){
         return this.registrationService;
+    }
+
+    @Bean
+    public NodeRegistrationService getNodeRegistrationService()
+    {
+        return nodeRegistrationService;
     }
 
     @Bean
@@ -56,6 +66,16 @@ public class HessianRmiConfig
         log.debug("Creating DeviceRegistration Hessian service: "+registrationService.toString());
         he.setService(registrationService);
         he.setServiceInterface(DeviceRegistrationService.class);
+        return he;
+    }
+
+    @Bean(name = "/registerNode")
+    public HessianServiceExporter nodeRegistrationExport() {
+        HessianServiceExporter he = new HessianServiceExporter();
+        log.debug("Creating NodeRegistration Hessian service: "+
+                          nodeRegistrationService.toString());
+        he.setService(nodeRegistrationService);
+        he.setServiceInterface(NodeRegistrationService.class);
         return he;
     }
 
