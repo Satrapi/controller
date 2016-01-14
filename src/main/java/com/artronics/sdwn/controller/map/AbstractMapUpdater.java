@@ -28,11 +28,10 @@ public abstract class AbstractMapUpdater implements MapUpdater
     @Override
     public SdwnNodeEntity addSink(DeviceConnectionEntity device)
     {
-        log.debug("Update NetworkMap. Adding sink node: " + device.getSinkAddress() + " to " +
+        SdwnNodeEntity sink = device.getSinkNode();
+        log.debug("Update NetworkMap. Adding sink node: " + sink + " to " +
                           "NetworkMap.");
 
-        SdwnNodeEntity sink = new SdwnNodeEntity(device.getSinkAddress(), device);
-        sink.setType(SdwnNodeEntity.Type.SINK);
         sink.setStatus(SdwnNodeEntity.Status.IDLE);
 
         sink = nodeRepo.persist(sink);
