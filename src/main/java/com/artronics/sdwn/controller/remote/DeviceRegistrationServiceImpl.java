@@ -6,9 +6,11 @@ import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
+import com.artronics.sdwn.domain.repositories.NodeRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -22,17 +24,21 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
     private DeviceConnectionRepo deviceRepo;
 
+    private NodeRepo nodeRepo;
+
     private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
 
     private MapUpdater mapUpdater;
 
     @Override
-    public DeviceConnectionEntity register(DeviceConnectionEntity device)
+    public DeviceConnectionEntity registerDevice(DeviceConnectionEntity device, SdwnNodeEntity sink)
     {
-        return persistDevice(device);
+        return persistDeviceAndSink(device,sink);
     }
 
-    private DeviceConnectionEntity persistDevice(DeviceConnectionEntity device)
+    @Transactional
+    private DeviceConnectionEntity persistDeviceAndSink(DeviceConnectionEntity device,
+                                                        SdwnNodeEntity sink)
     {
         log.debug("Registering new DeviceConnection: "+device.toString());
         DeviceConnectionEntity persistedDev;
@@ -40,16 +46,27 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
         DeviceConnectionEntity dev = deviceRepo.findByUrl(device.getUrl());
 
         if (dev == null) {
-            persistedDev = deviceRepo.create(device, controllerEntity.getId());
+            log.debug("No DeviceConnection found. Creating one.");
+            persistedDev = deviceRepo.create(device, controllerEntity);
+
+            sink = device.getSinkNode();
+            sink.setDevice(persistedDev);
+
+            sink = nodeRepo.persist(sink);
+
+            persistedDev.setSinkNode(sink);
+            deviceRepo.save(persistedDev);
         }else {
+            log.debug("Found DeviceConnection. Updating ");
             dev.setSdwnController(controllerEntity);
-            persistedDev = deviceRepo.create(dev, controllerEntity.getId());
+            sink = dev.getSinkNode();
+            persistedDev = deviceRepo.create(dev, controllerEntity);
         }
 
+        mapUpdater.addSink(sink);
 
         log.debug("Device persisted: " + persistedDev.toString());
 
-        mapUpdater.addSink(persistedDev);
 
         return persistedDev;
     }
@@ -65,6 +82,12 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     public void setDeviceRepo(DeviceConnectionRepo deviceRepo)
     {
         this.deviceRepo = deviceRepo;
+    }
+
+    @Autowired
+    public void setNodeRepo(NodeRepo nodeRepo)
+    {
+        this.nodeRepo = nodeRepo;
     }
 
     @Resource(name = "netMap")
