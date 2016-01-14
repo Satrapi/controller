@@ -5,9 +5,7 @@ import com.artronics.sdwn.controller.map.SdwnNetworkMap;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.helpers.SeedNetworkGraph;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class SeedNetworkGraphAndMap extends SeedNetworkGraph
 {
     private NetworkMap<SdwnNodeEntity> networkMap;
