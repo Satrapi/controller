@@ -46,6 +46,7 @@ public class PacketServiceImpl implements PacketService
         neighbors.forEach(neighbor -> neighbor.setWeight(
                 weightCalculator.getWeight(packet.getSrcNode(),neighbor)
         ));
+
         log.debug("Persisting Packet...");
         packetRepo.persist(packet);
 

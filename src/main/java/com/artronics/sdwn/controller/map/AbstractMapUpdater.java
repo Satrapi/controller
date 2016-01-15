@@ -3,7 +3,6 @@ package com.artronics.sdwn.controller.map;
 import com.artronics.sdwn.controller.log.NodeLogger;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
-import com.artronics.sdwn.domain.repositories.NeighborRepo;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ public abstract class AbstractMapUpdater implements MapUpdater
     protected WeightCalculator weightCalculator;
 
     protected NodeRepo nodeRepo;
-
-    protected NeighborRepo neighborRepo;
 
     protected DeviceConnectionEntity device;
 
@@ -61,24 +58,4 @@ public abstract class AbstractMapUpdater implements MapUpdater
         this.nodeRepo = nodeRepo;
     }
 
-    @Autowired
-    public void setNeighborRepo(NeighborRepo neighborRepo)
-    {
-        this.neighborRepo = neighborRepo;
-    }
-//    protected class Report
-//    {
-//        protected final SdwnNodeEntity src;
-//        protected final SdwnNodeEntity dst;
-//        protected final Set<SdwnNeighbor> neighbors;
-//
-//        public Report(PacketEntity packet)
-//        {
-//            src = new SdwnNodeEntity(Integer.toUnsignedLong(packet.getSrcShortAdd()));
-//            dst = new SdwnNodeEntity(Integer.toUnsignedLong(packet.getDstShortAdd()));
-//            src.setDevice(packet.getDevice());
-//            dst.setDevice(packet.getDevice());
-//            neighbors = new HashSet<>(SdwnNeighbor.createNeighbors(packet));
-//        }
-//    }
 }

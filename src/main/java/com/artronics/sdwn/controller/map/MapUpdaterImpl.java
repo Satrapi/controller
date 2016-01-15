@@ -4,6 +4,7 @@ import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
+import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -22,25 +23,30 @@ public class MapUpdaterImpl extends AbstractMapUpdater
     {
         switch (packet.getType()) {
             case REPORT:
-                processReportPacket(packet);
+                processReportPacket((SdwnReportPacket) packet);
                 break;
         }
     }
 
-    protected void processReportPacket(PacketEntity packet)
+    protected SdwnReportPacket processReportPacket(SdwnReportPacket packet)
     {
+        if (packet.getId()==null)
+            throw new IllegalStateException("Packet must be persisted before processed by MapUpdater");
+
         SdwnNodeEntity srcNode = packet.getSrcNode();
 
         Set<Neighbor<SdwnNodeEntity>> currentNeighbors
                 = networkMap.getNeighbors(srcNode);
-        List<SdwnNeighbor> preNeighbors =
-                neighborRepo.getNeighbors(srcNode);
+
+        List<SdwnNeighbor> preNeighbors = packet.getNeighbors();
 
         compareWithCurrentNeighborSet(srcNode, currentNeighbors, preNeighbors);
 
         if (!currentNeighbors.isEmpty()) {
             removeDroppedLinks(srcNode, currentNeighbors);
         }
+
+        return packet;
     }
 
     protected void compareWithCurrentNeighborSet(SdwnNodeEntity srcNode,

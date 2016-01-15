@@ -3,7 +3,6 @@ package com.artronics.sdwn.controller;
 import com.artronics.sdwn.controller.map.MapUpdater;
 import com.artronics.sdwn.controller.map.NetworkMap;
 import com.artronics.sdwn.domain.entities.NetworkSession;
-import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 @Component
@@ -56,25 +54,14 @@ public class SdwnControllerImpl implements SdwnController
                 break;
         }
 
-//        mapUpdater.updateMap(packet);
+        mapUpdater.updateMap(packet);
 
     }
-    private void processReportPacket(SdwnReportPacket packet)
+
+    private SdwnReportPacket processReportPacket(SdwnReportPacket packet)
     {
-//        packet.setSrcNode(
-//                nodeRepo.persist(packet.getSrcNode()));
-
-        List<SdwnNeighbor> neighbors = SdwnNeighbor.createNeighbors(packet);
-
-//        for (SdwnNeighbor neighbor : neighbors) {
-//            SdwnNodeEntity node = neighbor.getNode();
-//            if(!networkMap.contains(node)){
-//                nodeRepo.persist(node);
-////                networkMap.addNode(node);
-//            }
-//        }
+        return packet;
     }
-
 
     @Override
     public void stop()

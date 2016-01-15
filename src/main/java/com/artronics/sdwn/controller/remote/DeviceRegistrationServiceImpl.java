@@ -29,14 +29,14 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     @Override
     public DeviceConnectionEntity registerDevice(DeviceConnectionEntity device, SdwnNodeEntity sink)
     {
-        return persistDeviceAndSink(device,sink);
+        return persistDeviceAndSink(device, sink);
     }
 
     @Transactional
     private DeviceConnectionEntity persistDeviceAndSink(@NotNull DeviceConnectionEntity device,
                                                         @NotNull SdwnNodeEntity sink)
     {
-        log.debug("Registering new DeviceConnection: "+device.toString());
+        log.debug("Registering new DeviceConnection: " + device.toString());
         DeviceConnectionEntity persistedDev;
 
         DeviceConnectionEntity dev = deviceRepo.findByUrl(device.getUrl());
@@ -56,17 +56,17 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
         }else {
             log.debug("Found DeviceConnection. Updating ");
             dev.setSdwnController(controllerEntity);
-            if (dev.getSinkNode()==null){
-                sink.setDevice(dev);
-                nodeRepo.persist(sink);
-                log.debug("Sink Node persisted: " + sink.toString());
-            }
             persistedDev = deviceRepo.create(dev, controllerEntity);
+
+            sink.setDevice(persistedDev);
+            nodeRepo.persist(sink);
+            log.debug("Sink Node persisted: " + sink.toString());
         }
 
         mapUpdater.addSink(sink);
 
-        log.debug("Device persisted: " + persistedDev.toString() + " ->associated " +sink.toString());
+        log.debug("Device persisted: " + persistedDev.toString() + " ->associated " + sink
+                .toString());
 
         return persistedDev;
     }
