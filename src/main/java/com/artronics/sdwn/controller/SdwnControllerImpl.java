@@ -1,8 +1,12 @@
 package com.artronics.sdwn.controller;
 
 import com.artronics.sdwn.controller.map.MapUpdater;
+import com.artronics.sdwn.controller.map.NetworkMap;
 import com.artronics.sdwn.domain.entities.NetworkSession;
+import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
+import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
+import com.artronics.sdwn.domain.repositories.NodeRepo;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import org.apache.log4j.Logger;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 @Component
@@ -23,7 +28,11 @@ public class SdwnControllerImpl implements SdwnController
 
     private MapUpdater mapUpdater;
 
+    private NetworkMap<SdwnNodeEntity> networkMap;
+
     private PacketRepo packetRepo;
+
+    private NodeRepo nodeRepo;
 
     private SdwnControllerRepo controllerRepo;
 
@@ -46,23 +55,21 @@ public class SdwnControllerImpl implements SdwnController
                 break;
         }
 
-        mapUpdater.updateMap(packet);
+//        mapUpdater.updateMap(packet);
 
-        log.debug("Persisting Packet...");
-        PacketEntity persistedPacket = packetRepo.persist(packet);
     }
     private void processReportPacket(PacketEntity packet)
     {
 //        packet.setSrcNode(
 //                nodeRepo.persist(packet.getSrcNode()));
-//
-//        Set<SdwnNeighbor> neighbors = SdwnNeighbor.createNeighbors(packet);
-//
+
+        Set<SdwnNeighbor> neighbors = SdwnNeighbor.createNeighbors(packet);
+
 //        for (SdwnNeighbor neighbor : neighbors) {
 //            SdwnNodeEntity node = neighbor.getNode();
 //            if(!networkMap.contains(node)){
 //                nodeRepo.persist(node);
-//                networkMap.addNode(node);
+////                networkMap.addNode(node);
 //            }
 //        }
     }
@@ -91,6 +98,19 @@ public class SdwnControllerImpl implements SdwnController
     public void setMapUpdater(MapUpdater mapUpdater)
     {
         this.mapUpdater = mapUpdater;
+    }
+
+    @Autowired
+    public void setNetworkMap(
+            NetworkMap<SdwnNodeEntity> networkMap)
+    {
+        this.networkMap = networkMap;
+    }
+
+    @Autowired
+    public void setNodeRepo(NodeRepo nodeRepo)
+    {
+        this.nodeRepo = nodeRepo;
     }
 
     @Autowired
