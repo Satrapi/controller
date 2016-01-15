@@ -6,6 +6,7 @@ import com.artronics.sdwn.domain.entities.NetworkSession;
 import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
+import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
@@ -14,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Set;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 @Component
@@ -51,19 +52,19 @@ public class SdwnControllerImpl implements SdwnController
     {
         switch (packet.getType()){
             case REPORT:
-                processReportPacket(packet);
+                processReportPacket((SdwnReportPacket) packet);
                 break;
         }
 
 //        mapUpdater.updateMap(packet);
 
     }
-    private void processReportPacket(PacketEntity packet)
+    private void processReportPacket(SdwnReportPacket packet)
     {
 //        packet.setSrcNode(
 //                nodeRepo.persist(packet.getSrcNode()));
 
-        Set<SdwnNeighbor> neighbors = SdwnNeighbor.createNeighbors(packet);
+        List<SdwnNeighbor> neighbors = SdwnNeighbor.createNeighbors(packet);
 
 //        for (SdwnNeighbor neighbor : neighbors) {
 //            SdwnNodeEntity node = neighbor.getNode();
