@@ -8,7 +8,6 @@ import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.concurrent.BlockingQueue;
@@ -38,14 +37,36 @@ public class SdwnControllerImpl implements SdwnController
         packLst.start();
     }
 
-    @Transactional
+    @Override
     public void addPacket(PacketEntity packet)
     {
+        switch (packet.getType()){
+            case REPORT:
+                processReportPacket(packet);
+                break;
+        }
+
         packet =mapUpdater.addPacket(packet);
 
         log.debug("Persisting Packet...");
         PacketEntity persistedPacket = packetRepo.save(packet);
     }
+    private void processReportPacket(PacketEntity packet)
+    {
+//        packet.setSrcNode(
+//                nodeRepo.persist(packet.getSrcNode()));
+//
+//        Set<SdwnNeighbor> neighbors = SdwnNeighbor.createNeighbors(packet);
+//
+//        for (SdwnNeighbor neighbor : neighbors) {
+//            SdwnNodeEntity node = neighbor.getNode();
+//            if(!networkMap.contains(node)){
+//                nodeRepo.persist(node);
+//                networkMap.addNode(node);
+//            }
+//        }
+    }
+
 
     @Override
     public void stop()
