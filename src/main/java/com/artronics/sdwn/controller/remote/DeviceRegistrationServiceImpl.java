@@ -1,7 +1,6 @@
 package com.artronics.sdwn.controller.remote;
 
 import com.artronics.sdwn.controller.map.MapUpdater;
-import com.artronics.sdwn.controller.map.NetworkMap;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
@@ -12,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
 
 @Component
 public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
@@ -26,8 +23,6 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     private DeviceConnectionRepo deviceRepo;
 
     private NodeRepo nodeRepo;
-
-    private Map<Long,NetworkMap<SdwnNodeEntity>> netMap;
 
     private MapUpdater mapUpdater;
 
@@ -93,13 +88,6 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     public void setNodeRepo(NodeRepo nodeRepo)
     {
         this.nodeRepo = nodeRepo;
-    }
-
-    @Resource(name = "netMap")
-    public void setNetMap(
-            Map<Long, NetworkMap<SdwnNodeEntity>> netMap)
-    {
-        this.netMap = netMap;
     }
 
     @Autowired

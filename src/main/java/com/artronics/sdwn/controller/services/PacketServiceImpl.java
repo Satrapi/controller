@@ -1,7 +1,5 @@
 package com.artronics.sdwn.controller.services;
 
-import com.artronics.sdwn.controller.map.NetworkMap;
-import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import org.apache.log4j.Logger;
@@ -18,8 +16,6 @@ public class PacketServiceImpl implements PacketService
 
     private BlockingQueue<PacketEntity> packetQueue;
 
-    private NetworkMap<SdwnNodeEntity> networkMap;
-
     private NodeRepo nodeRepo;
 
     @Override
@@ -27,13 +23,6 @@ public class PacketServiceImpl implements PacketService
     {
         log.debug("packet added to queue");
         packetQueue.add(packet);
-    }
-
-    @Autowired
-    public void setNetworkMap(
-            NetworkMap<SdwnNodeEntity> networkMap)
-    {
-        this.networkMap = networkMap;
     }
 
     @Autowired
