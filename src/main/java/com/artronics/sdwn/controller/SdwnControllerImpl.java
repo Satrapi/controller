@@ -46,10 +46,10 @@ public class SdwnControllerImpl implements SdwnController
                 break;
         }
 
-        packet =mapUpdater.addPacket(packet);
+//        packet =mapUpdater.addPacket(packet);
 
         log.debug("Persisting Packet...");
-        PacketEntity persistedPacket = packetRepo.save(packet);
+        PacketEntity persistedPacket = packetRepo.persist(packet);
     }
     private void processReportPacket(PacketEntity packet)
     {
