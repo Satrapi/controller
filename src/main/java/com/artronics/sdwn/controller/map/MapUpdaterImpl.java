@@ -18,15 +18,13 @@ public class MapUpdaterImpl extends AbstractMapUpdater
     private final static Logger log = Logger.getLogger(MapUpdaterImpl.class);
 
     @Override
-    public PacketEntity addPacket(PacketEntity packet)
+    public void updateMap(PacketEntity packet)
     {
         switch (packet.getType()) {
             case REPORT:
                 processReportPacket(packet);
                 break;
         }
-
-        return packet;
     }
 
     protected void processReportPacket(PacketEntity packet)

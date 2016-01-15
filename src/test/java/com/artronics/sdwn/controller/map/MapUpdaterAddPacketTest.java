@@ -42,7 +42,7 @@
 //    public void if_for_src_add_there_is_no_node_it_should_create_a_node(){
 //        addAReport();
 //
-//        mapUpdater.addPacket(packet);
+//        mapUpdater.updateMap(packet);
 //
 //        assertTrue(map.contains(node));
 //    }
@@ -51,9 +51,9 @@
 //    public void if_node_is_already_there_it_should_not_persist_it_again(){
 //        reset(nodeRepo);
 //        addAReport();
-//        mapUpdater.addPacket(packet);
+//        mapUpdater.updateMap(packet);
 //        addAReport();
-//        mapUpdater.addPacket(packet);
+//        mapUpdater.updateMap(packet);
 //
 //        verify(nodeRepo,times(1)).create(any(SdwnNodeEntity.class),eq(device.getId()));
 //        verifyNoMoreInteractions(nodeRepo);
@@ -68,7 +68,7 @@
 //        NetworkMap<SdwnNodeEntity> expMap = getDefaultNetworkMap();
 //
 //        addAReport();
-//        mapUpdater.addPacket(packet);
+//        mapUpdater.updateMap(packet);
 //
 //    }
 //    private void mockNodeRepo(int... addresses){

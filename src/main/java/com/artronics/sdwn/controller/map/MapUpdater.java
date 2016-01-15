@@ -7,7 +7,7 @@ public interface MapUpdater
 {
     SdwnNodeEntity addSink(SdwnNodeEntity sink);
 
-    PacketEntity addPacket(PacketEntity packet);
+    void updateMap(PacketEntity packet);
 
     NetworkMap<SdwnNodeEntity> getNetworkMap();
 }

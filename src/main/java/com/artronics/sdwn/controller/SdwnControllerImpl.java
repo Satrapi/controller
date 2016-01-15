@@ -46,7 +46,7 @@ public class SdwnControllerImpl implements SdwnController
                 break;
         }
 
-//        packet =mapUpdater.addPacket(packet);
+        mapUpdater.updateMap(packet);
 
         log.debug("Persisting Packet...");
         PacketEntity persistedPacket = packetRepo.persist(packet);
