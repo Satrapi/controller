@@ -55,7 +55,7 @@ public class SdwnGraphDelegator implements GraphDelegator<SdwnNodeEntity>
     public Set<Neighbor<SdwnNodeEntity>> getNeighbors(SdwnNodeEntity node)
     {
         if (!graph.containsVertex(node))
-            return null;
+            throw new IllegalStateException("This node is not in map.");
 
         Map<SdwnNodeEntity,DefaultWeightedEdge> nodes = new HashMap<>();
 

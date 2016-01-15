@@ -72,7 +72,7 @@ public class SdwnNetMapPrinter implements NetworkMapPrinter<SdwnNodeEntity>
         return s;
     }
 
-    static String formatNeighbor(SdwnNodeEntity n1, Double weight, SdwnNodeEntity n2)
+    public static String formatNeighbor(SdwnNodeEntity n1, Double weight, SdwnNodeEntity n2)
     {
         String s = n1.toString();
         s+=String.format(" <---[ %-5.0f ]---> " ,weight);

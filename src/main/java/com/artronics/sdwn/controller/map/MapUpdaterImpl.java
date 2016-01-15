@@ -8,12 +8,12 @@ import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 @Component
-//@Primary
 public class MapUpdaterImpl extends AbstractMapUpdater
 {
     private final static Logger log = Logger.getLogger(MapUpdaterImpl.class);
@@ -38,50 +38,67 @@ public class MapUpdaterImpl extends AbstractMapUpdater
         Set<Neighbor<SdwnNodeEntity>> currentNeighbors
                 = networkMap.getNeighbors(srcNode);
 
-        List<SdwnNeighbor> preNeighbors = packet.getNeighbors();
+        List<SdwnNeighbor> newNeighbors = packet.getNeighbors();
 
-        compareWithCurrentNeighborSet(srcNode, currentNeighbors, preNeighbors);
+        compareWithCurrentNeighborSet(srcNode, currentNeighbors, newNeighbors);
 
-        if (!currentNeighbors.isEmpty()) {
-            removeDroppedLinks(srcNode, currentNeighbors);
-        }
 
         return packet;
     }
 
     protected void compareWithCurrentNeighborSet(SdwnNodeEntity srcNode,
                                                  Set<Neighbor<SdwnNodeEntity>> currentNeighbors,
-                                                 List<SdwnNeighbor> preNeighbors)
+                                                 List<SdwnNeighbor> newNeighbors)
     {
+        //Each time a link is updated we remove that link from tempSet
+        //What will left is dropped links
+        Set<Neighbor<SdwnNodeEntity>> tempSet = new HashSet<>(currentNeighbors);
 
-//        for (Neighbor<> neighbor : report.neighbors) {
-//
-//            if (!networkMap.contains(neighbor)) {
-//                addNode(neighbor);
-//                connect(srcNode, neighbor);
-//            }else if (currentNeighbors.contains(neighbor)) {
-//                currentNeighbors.remove(neighbor);
-//                connect(srcNode, neighbor);
-//            }else {
-//                connect(srcNode, neighbor);
-//            }
-//        }
+        newNeighbors.forEach(neighbor -> {
+            SdwnNodeEntity targetNode = neighbor.getNode();
+
+            //New neighbor discovery
+            if (!networkMap.hasLink(srcNode,targetNode)){
+                networkMap.addLink(srcNode,targetNode,neighbor.getWeight());
+                mapLogger.logNewLink(srcNode,neighbor);
+            }
+            //Update Current Link
+            else{
+                networkMap.addLink(srcNode,targetNode,neighbor.getWeight());
+                tempSet.remove(targetNode);
+                mapLogger.logUpdatedLink(srcNode,neighbor);
+            }
+
+        if (!tempSet.isEmpty()) {
+            removeDroppedLinks(srcNode, tempSet);
+        }
+
+        });
 
     }
 
-    protected void removeDroppedLinks(SdwnNodeEntity srcNode, Set<?> remainNeighbors)
+    protected void removeDroppedLinks(SdwnNodeEntity srcNode,
+                                      Set<Neighbor<SdwnNodeEntity>> remainNeighbors)
     {
-        Iterator it = remainNeighbors.iterator();
-        while (it.hasNext()) {
-            SdwnNodeEntity nodeEntity = (SdwnNodeEntity) it.next();
+        remainNeighbors.forEach(neighbor -> {
+            SdwnNodeEntity targetNode = neighbor.getNode();
 
-//            networkMap.removeLink(srcNode, nodeEntity);
+            networkMap.removeLink(srcNode, targetNode);
+            mapLogger.removeLink(srcNode,neighbor);
+
             //Look for other link with this node if
             //there is no link this node just became islan
             //and should be removed from graph
-            if (networkMap.isIsland(nodeEntity)) {
-                networkMap.removeNode(nodeEntity);
+            if (networkMap.isIsland(targetNode)) {
+                networkMap.removeNode(targetNode);
+                SdwnNodeEntity node =nodeRepo.findOne(targetNode.getId());
+                node.setStatus(SdwnNodeEntity.Status.ISLAND);
+                nodeRepo.persist(node);
             }
+        });
+        Iterator it = remainNeighbors.iterator();
+        while (it.hasNext()) {
+            SdwnNodeEntity nodeEntity = (SdwnNodeEntity) it.next();
 
         }
     }

@@ -60,6 +60,8 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
             sink.setDevice(persistedDev);
             nodeRepo.persist(sink);
+            persistedDev.setSinkNode(sink);
+            deviceRepo.create(persistedDev,controllerEntity);
             log.debug("Sink Node persisted: " + sink.toString());
         }
 

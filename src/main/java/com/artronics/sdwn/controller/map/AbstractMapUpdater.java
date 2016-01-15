@@ -1,5 +1,6 @@
 package com.artronics.sdwn.controller.map;
 
+import com.artronics.sdwn.controller.log.MapLogger;
 import com.artronics.sdwn.controller.log.NodeLogger;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
@@ -13,6 +14,9 @@ public abstract class AbstractMapUpdater implements MapUpdater
 
     @Autowired
     protected NodeLogger nodeLogger;
+
+    @Autowired
+    protected MapLogger mapLogger;
 
     protected NetworkMap<SdwnNodeEntity> networkMap;
 
