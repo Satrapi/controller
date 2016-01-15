@@ -6,6 +6,38 @@ import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.helpers.SeedNetworkGraph;
 import org.springframework.beans.factory.annotation.Autowired;
 
+/*
+    Device1
+    node number 30 is sameAddNode
+    look for code for weight values
+    Graph is like
+                sink:0
+                  /   \
+                w50  w10
+                /      \
+             135 --w20-- 30
+               \         /
+               w25    w100
+                 \    /
+                  136
+                   |
+                  w30
+                   |
+                  137
+
+    Device2
+    node number 30 is sameAddNode
+    Graph is like
+                sink
+                    |
+                   w10
+                    |
+                   245
+                  /   \
+                w20    w100
+               /         \
+             246 --w30-- 30
+ */
 public class SeedNetworkGraphAndMap extends SeedNetworkGraph
 {
     private NetworkMap<SdwnNodeEntity> networkMap;

@@ -1,18 +1,18 @@
 package com.artronics.sdwn.controller.map;
 
+import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Set;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.*;
 
 public class SdwnNetworkMapTest extends BaseGraphTest
 {
-
-
     @Override
     @Before
     public void setUp() throws Exception
@@ -76,4 +76,9 @@ public class SdwnNetworkMapTest extends BaseGraphTest
         assertThat(nodes.size(), equalTo(9));
     }
 
+    @Test
+    public void it_should_get_neighbors(){
+        Set<Neighbor<SdwnNodeEntity>> neighbors = map.getNeighbors(node135);
+        assertThat(neighbors.size(),equalTo(3));
+    }
 }

@@ -54,8 +54,8 @@ public class GraphDelegatorTest extends BaseGraphTest
         assertTrue(nodes.contains(node136));
     }
 
-    @Test
-    public void it_should_return_null_if_node_doesnt_exist()
+    @Test(expected = IllegalStateException.class)
+    public void it_should_throw_exp_if_node_does_not_exist()
     {
         SdwnNodeEntity node = new SdwnNodeEntity(3432L,new DeviceConnectionEntity(34L));
         assertNull(graphDelegator.getNeighbors(node));
