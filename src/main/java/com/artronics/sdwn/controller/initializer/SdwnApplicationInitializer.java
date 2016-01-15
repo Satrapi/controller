@@ -3,6 +3,7 @@ package com.artronics.sdwn.controller.initializer;
 import com.artronics.sdwn.controller.SdwnController;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
+import com.artronics.sdwn.domain.repositories.SessionRepo;
 import com.artronics.sdwn.domain.session.SessionManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.DisposableBean;
@@ -25,6 +26,8 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
     private SdwnController sdwnController;
 
     private SdwnControllerEntity controllerEntity;
+
+    private SessionRepo sessionRepo;
 
     private SdwnControllerRepo controllerRepo;
 
@@ -50,8 +53,11 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
         sdwnController.stop();
 
         sessionManager.close();
+
+        sessionRepo.expire();
     }
 
+    @Autowired
     public void setSessionManager(SessionManager sessionManager)
     {
         this.sessionManager = sessionManager;
@@ -75,6 +81,12 @@ public class SdwnApplicationInitializer implements ApplicationRunner,
             SdwnControllerRepo controllerRepo)
     {
         this.controllerRepo = controllerRepo;
+    }
+
+    @Autowired
+    public void setSessionRepo(SessionRepo sessionRepo)
+    {
+        this.sessionRepo = sessionRepo;
     }
 
 }
