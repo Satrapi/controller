@@ -10,7 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -21,10 +23,18 @@ public class SdwnBaseConfig
 
     protected String controllerUrl;
 
+    protected Set<SdwnNodeEntity> registeredNodes = new HashSet<>();
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer()
     {
         return new PropertySourcesPlaceholderConfigurer();
+    }
+
+    @Bean(name = "registeredNodes")
+    public Set<SdwnNodeEntity> getRegisteredNodes()
+    {
+        return registeredNodes;
     }
 
     @Value("${com.artronics.sdwn.controller.url}")

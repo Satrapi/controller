@@ -1,6 +1,5 @@
 package com.artronics.sdwn.controller.remote;
 
-import com.artronics.sdwn.controller.map.MapUpdater;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
@@ -8,10 +7,13 @@ import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Component
 public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
@@ -24,7 +26,7 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
     private NodeRepo nodeRepo;
 
-    private MapUpdater mapUpdater;
+    private Set<SdwnNodeEntity> registeredNodes;
 
     @Override
     public DeviceConnectionEntity registerDevice(DeviceConnectionEntity device, SdwnNodeEntity sink)
@@ -65,12 +67,20 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
             log.debug("Sink Node persisted: " + sink.toString());
         }
 
-        mapUpdater.addSink(sink);
+        registeredNodes.add(sink);
 
         log.debug("Device persisted: " + persistedDev.toString() + " ->associated " + sink
                 .toString());
 
         return persistedDev;
+    }
+
+    @Resource
+    @Qualifier("registeredNodes")
+    public void setRegisteredNodes(
+            Set<SdwnNodeEntity> registeredNodes)
+    {
+        this.registeredNodes = registeredNodes;
     }
 
     @Autowired
@@ -90,12 +100,6 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     public void setNodeRepo(NodeRepo nodeRepo)
     {
         this.nodeRepo = nodeRepo;
-    }
-
-    @Autowired
-    public void setMapUpdater(MapUpdater mapUpdater)
-    {
-        this.mapUpdater = mapUpdater;
     }
 
 }

@@ -36,7 +36,6 @@ public class PacketServiceImpl implements PacketService
                 break;
         }
 
-
         log.debug("packet added to queue");
         packetQueue.add(packet);
     }

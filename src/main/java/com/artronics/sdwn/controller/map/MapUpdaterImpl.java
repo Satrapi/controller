@@ -21,6 +21,8 @@ public class MapUpdaterImpl extends AbstractMapUpdater
     @Override
     public void updateMap(PacketEntity packet)
     {
+        //Source of Packet must be active(if it's not already)
+        activeNode(packet.getSrcNode());
         switch (packet.getType()) {
             case REPORT:
                 processReportPacket((SdwnReportPacket) packet);
@@ -35,24 +37,54 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
         SdwnNodeEntity srcNode = packet.getSrcNode();
 
-        Set<Neighbor<SdwnNodeEntity>> currentNeighbors
+        List<SdwnNeighbor> newNeighbors = packet.getNeighbors();
+        addNeighborsToMap(newNeighbors);
+
+        Set<Neighbor<SdwnNodeEntity>> oldNeighbors
                 = networkMap.getNeighbors(srcNode);
 
-        List<SdwnNeighbor> newNeighbors = packet.getNeighbors();
-
-        compareWithCurrentNeighborSet(srcNode, currentNeighbors, newNeighbors);
-
+        compareWithCurrentNeighborSet(srcNode, oldNeighbors, newNeighbors);
 
         return packet;
     }
 
+    private void addNeighborsToMap(List<SdwnNeighbor> newNeighbors)
+    {
+        newNeighbors.forEach(neighbor -> {
+            SdwnNodeEntity node = neighbor.getNode();
+            if (!registeredNodes.contains(node))
+                throw new IllegalStateException
+                        ("There is an unregistered neighbor's node inside report packet: "+node);
+            if (!networkMap.contains(node)){
+                networkMap.addNode(node);
+            }
+        });
+    }
+
+    private void activeNode(SdwnNodeEntity srcNode)
+    {
+        if (!networkMap.contains(srcNode) ||
+                srcNode.getStatus()!= SdwnNodeEntity.Status.ACTIVE){
+
+            SdwnNodeEntity.Status preS = srcNode.getStatus();
+            srcNode.setStatus(SdwnNodeEntity.Status.ACTIVE);
+            nodeLogger.changeStatus(srcNode,preS,SdwnNodeEntity.Status.ACTIVE);
+            //update db
+            nodeRepo.merge(srcNode);
+            nodeLogger.persistNode(srcNode);
+
+            networkMap.addNode(srcNode);
+            mapLogger.logNewNode(srcNode);
+        }
+    }
+
     protected void compareWithCurrentNeighborSet(SdwnNodeEntity srcNode,
-                                                 Set<Neighbor<SdwnNodeEntity>> currentNeighbors,
+                                                 Set<Neighbor<SdwnNodeEntity>> oldNeighbors,
                                                  List<SdwnNeighbor> newNeighbors)
     {
         //Each time a link is updated we remove that link from tempSet
         //What will left is dropped links
-        Set<Neighbor<SdwnNodeEntity>> tempSet = new HashSet<>(currentNeighbors);
+        Set<Neighbor<SdwnNodeEntity>> tempSet = new HashSet<>(oldNeighbors);
 
         newNeighbors.forEach(neighbor -> {
             SdwnNodeEntity targetNode = neighbor.getNode();
@@ -68,13 +100,11 @@ public class MapUpdaterImpl extends AbstractMapUpdater
                 tempSet.remove(targetNode);
                 mapLogger.logUpdatedLink(srcNode,neighbor);
             }
+        });
 
         if (!tempSet.isEmpty()) {
             removeDroppedLinks(srcNode, tempSet);
         }
-
-        });
-
     }
 
     protected void removeDroppedLinks(SdwnNodeEntity srcNode,
@@ -93,7 +123,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
                 networkMap.removeNode(targetNode);
                 SdwnNodeEntity node =nodeRepo.findOne(targetNode.getId());
                 node.setStatus(SdwnNodeEntity.Status.ISLAND);
-                nodeRepo.persist(node);
+                nodeRepo.merge(node);
             }
         });
         Iterator it = remainNeighbors.iterator();
