@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {MapUpdaterRegisterSinkTest.MapUpdaterBeanConfig.class,
+@ContextConfiguration(classes = {
         SdwnBaseConfig.class,
         MockRepoBeanConfig.class})
 public class BaseMapUpdaterTest

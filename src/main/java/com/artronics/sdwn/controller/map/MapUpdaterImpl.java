@@ -20,8 +20,6 @@ public class MapUpdaterImpl extends AbstractMapUpdater
     @Override
     public PacketEntity addPacket(PacketEntity packet)
     {
-        device = packet.getDevice();
-
         switch (packet.getType()) {
             case REPORT:
                 processReportPacket(packet);
