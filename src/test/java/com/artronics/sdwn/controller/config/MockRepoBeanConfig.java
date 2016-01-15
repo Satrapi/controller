@@ -1,9 +1,6 @@
 package com.artronics.sdwn.controller.config;
 
-import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
-import com.artronics.sdwn.domain.repositories.NodeRepo;
-import com.artronics.sdwn.domain.repositories.PacketRepo;
-import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
+import com.artronics.sdwn.domain.repositories.*;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +14,11 @@ import static org.mockito.Mockito.mock;
 public class MockRepoBeanConfig
 {
     private final static Logger log = Logger.getLogger(MockRepoBeanConfig.class);
+
+    @Bean(name = "mockSessionRepo")
+    SessionRepo getMockSessionRepo(){
+        return mock(SessionRepo.class);
+    }
 
     @Bean(name = "mockNodeRepo")
     NodeRepo getMockNodeRepo(){

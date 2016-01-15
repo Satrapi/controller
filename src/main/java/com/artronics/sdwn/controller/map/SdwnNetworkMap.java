@@ -7,13 +7,11 @@ import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import org.jgrapht.Graph;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableUndirectedWeightedGraph;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Component
 public class SdwnNetworkMap implements NetworkMap<SdwnNodeEntity>
 {
     protected final ListenableUndirectedWeightedGraph<SdwnNodeEntity, DefaultWeightedEdge> graph =
