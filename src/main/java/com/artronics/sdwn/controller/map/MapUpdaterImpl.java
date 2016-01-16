@@ -21,8 +21,12 @@ public class MapUpdaterImpl extends AbstractMapUpdater
     @Override
     public void updateMap(PacketEntity packet)
     {
+        if (packet.getId()==null)
+            throw new IllegalStateException("Packet must be persisted before processed by MapUpdater");
+
         //Source of Packet must be active(if it's not already)
         activeNode(packet.getSrcNode());
+
         switch (packet.getType()) {
             case REPORT:
                 processReportPacket((SdwnReportPacket) packet);
@@ -32,8 +36,6 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
     protected SdwnReportPacket processReportPacket(SdwnReportPacket packet)
     {
-        if (packet.getId()==null)
-            throw new IllegalStateException("Packet must be persisted before processed by MapUpdater");
 
         SdwnNodeEntity srcNode = packet.getSrcNode();
 
@@ -131,13 +133,6 @@ public class MapUpdaterImpl extends AbstractMapUpdater
             SdwnNodeEntity nodeEntity = (SdwnNodeEntity) it.next();
 
         }
-    }
-
-    protected void connect(SdwnNodeEntity node, SdwnNeighbor neighbor)
-    {
-        double weight = weightCalculator.getWeight(node, neighbor);
-//        SdwnNodeEntity n = (SdwnNodeEntity) neighbor ;
-//        networkMap.addLink(node, neighbor, weight);
     }
 
     protected SdwnNodeEntity addNode(SdwnNodeEntity node)

@@ -1,7 +1,6 @@
-package com.artronics.sdwn.controller.support;
+package com.artronics.sdwn.controller.map;
 
 
-import com.artronics.sdwn.controller.map.WeightCalculator;
 import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import org.springframework.stereotype.Component;

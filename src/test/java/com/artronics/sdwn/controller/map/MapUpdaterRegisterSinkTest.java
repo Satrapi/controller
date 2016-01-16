@@ -71,9 +71,9 @@
 //    }
 //
 //    private SdwnNodeEntity getSink(){
-//        NetworkMap map =netMap.get(device.getId());
+//        NetworkMap networkMap =netMap.get(device.getId());
 //
-//        List<SdwnNodeEntity> nodes = map.getAllNodes();
+//        List<SdwnNodeEntity> nodes = networkMap.getAllNodes();
 //        SdwnNodeEntity sink = nodes.get(0);
 //
 //        return sink;

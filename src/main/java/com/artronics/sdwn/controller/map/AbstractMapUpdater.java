@@ -26,8 +26,6 @@ public abstract class AbstractMapUpdater implements MapUpdater
 
     protected NetworkMap<SdwnNodeEntity> networkMap;
 
-    protected WeightCalculator weightCalculator;
-
     protected NodeRepo nodeRepo;
 
     protected DeviceConnectionEntity device;
@@ -62,12 +60,6 @@ public abstract class AbstractMapUpdater implements MapUpdater
     public NetworkMap<SdwnNodeEntity> getNetworkMap()
     {
         return networkMap;
-    }
-
-    @Autowired
-    public void setWeightCalculator(WeightCalculator weightCalculator)
-    {
-        this.weightCalculator = weightCalculator;
     }
 
     @Autowired

@@ -10,13 +10,13 @@ public class SdwnNetMapPrinterTest extends BaseGraphTest
 
     @Test
     public void just_print_a_netMap_to_see_the_result(){
-        String s =printer.printNetworkMap(map);
+        String s =printer.printNetworkMap(networkMap);
         System.out.println(s);
     }
 
     @Test
     public void print_with_specific_device(){
-        String s =printer.printNetworkMap(map,seeder.getDevice1());
+        String s =printer.printNetworkMap(networkMap, seeder.getDevice1());
         System.out.println(s);
 
     }

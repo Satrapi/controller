@@ -2,13 +2,14 @@ package com.artronics.sdwn.controller.map;
 
 import com.artronics.sdwn.controller.config.MockRepoBeanConfig;
 import com.artronics.sdwn.controller.config.SdwnBaseConfig;
-import com.artronics.sdwn.controller.support.FixedWeightCalculator;
-import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
-import com.artronics.sdwn.domain.entities.NetworkSession;
-import com.artronics.sdwn.domain.entities.SdwnControllerEntity;
+import com.artronics.sdwn.controller.map.graph.SdwnGraphDelegator;
+import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
+import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
+import com.artronics.sdwn.domain.helpers.FakePacketFactory;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
@@ -28,22 +28,18 @@ import java.util.Set;
         SdwnBaseConfig.class,
         MockRepoBeanConfig.class,
 })
-@TestPropertySource("classpath:application-defaults-test.properties")
-public class BaseMapUpdaterTest
+public class BaseMapUpdaterTest extends BaseGraphTest
 {
-    protected static final Long SINK_ADD = 10L;
-
-    protected SdwnControllerEntity controller;
-    protected DeviceConnectionEntity device;
-    protected SdwnNodeEntity sinkNode = new SdwnNodeEntity(SINK_ADD);
-
-    @Resource
-    @Qualifier("registeredNodes")
-    protected Set<SdwnNodeEntity> registeredNodes;
+    protected static Long fakeId=0L;
+    protected FakePacketFactory factory = new FakePacketFactory();
 
     @Autowired
     @Qualifier("mapUpdaterTest")
     protected MapUpdater mapUpdater;
+
+    @Resource
+    @Qualifier("registeredNodes")
+    protected Set<SdwnNodeEntity> registeredNodes;
 
     @Autowired
     @Qualifier("mockNodeRepo")
@@ -52,9 +48,26 @@ public class BaseMapUpdaterTest
     @Before
     public void setUp() throws Exception
     {
-        sinkNode.setId(10L);
-        device = new DeviceConnectionEntity(1L,"foo",sinkNode);
+        super.setUp();
+        fakeId++;
+
+        graph = this.networkMap.getNetworkGraph();
+
+        graphDelegator = new SdwnGraphDelegator(graph);
     }
+    @Test
+    public void it(){
+
+    }
+
+    protected void registerNodes(SdwnReportPacket packet)
+    {
+        registeredNodes.add(packet.getSrcNode());
+        registeredNodes.add(packet.getDstNode());
+        packet.getNeighbors().forEach(neighbor ->
+                                              registeredNodes.add(neighbor.getNode()));
+    }
+
     @Configuration
     @ComponentScan(basePackages = {"com.artronics.sdwn.controller.log"})
 //    @ComponentScan(basePackages = {"com.artronics.sdwn.controller",
@@ -63,41 +76,27 @@ public class BaseMapUpdaterTest
 //            type = FilterType.ANNOTATION
 //    ))
 
-    public static class MapUpdaterBeanConfig{
-
-        NetworkSession networkSession;
-
+    public static class MapUpdaterBeanConfig
+    {
         @Autowired
         @Qualifier("mockNodeRepo")
         NodeRepo mockNodeRepo;
 
-        @Autowired
-        @Qualifier("fixedWeightCalculator")
-        WeightCalculator weightCalculator;
+//        @Autowired
+//        @Qualifier("fixedWeightCalculator")
+//        WeightCalculator<SdwnNeighbor> weightCalculator;
 
         @Bean(name = "mapUpdaterTest")
-        public MapUpdater getMapUpdater(){
+        public MapUpdater getMapUpdater()
+        {
             MapUpdaterImpl mapU = new MapUpdaterImpl();
 
-            mapU.setWeightCalculator(weightCalculator);
+            WeightCalculator<SdwnNeighbor> weightCalculator = new FixedWeightCalculator();
 
             mapU.setNodeRepo(mockNodeRepo);
 
             return mapU;
         }
 
-        @Bean(name = "fixedWeightCalculator")
-        public WeightCalculator getWeightCalculator()
-        {
-            return new FixedWeightCalculator();
-        }
-
-        @Bean
-        public NetworkSession getNetworkSession()
-        {
-            NetworkSession session= new NetworkSession();
-            session.setId(1000L);
-            return session;
-        }
     }
 }

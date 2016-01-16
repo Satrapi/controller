@@ -2,9 +2,15 @@ package com.artronics.sdwn.controller.support;
 
 import com.artronics.sdwn.controller.map.NetworkMap;
 import com.artronics.sdwn.controller.map.SdwnNetworkMap;
+import com.artronics.sdwn.domain.entities.NetworkSession;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.helpers.SeedNetworkGraph;
+import com.artronics.sdwn.domain.repositories.DeviceConnectionRepo;
+import com.artronics.sdwn.domain.repositories.NodeRepo;
+import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
+import com.artronics.sdwn.domain.repositories.SessionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /*
     Device1
@@ -38,6 +44,7 @@ import org.springframework.beans.factory.annotation.Autowired;
                /         \
              246 --w30-- 30
  */
+@Component
 public class SeedNetworkGraphAndMap extends SeedNetworkGraph
 {
     private NetworkMap<SdwnNodeEntity> networkMap;
@@ -135,4 +142,38 @@ public class SeedNetworkGraphAndMap extends SeedNetworkGraph
     {
         this.networkMap = networkMap;
     }
+
+    @Override
+//    @Autowired
+//    @Qualifier("networkSession")
+    public void setActiveSession(NetworkSession activeSession)
+    {
+        this.activeSession = activeSession;
+    }
+
+    @Override
+    public void setSessionRepo(SessionRepo sessionRepo)
+    {
+        this.sessionRepo = sessionRepo;
+    }
+
+    @Override
+    public void setNodeRepo(NodeRepo nodeRepo)
+    {
+        this.nodeRepo = nodeRepo;
+    }
+
+    @Override
+    public void setSdwnControllerRepo(
+            SdwnControllerRepo controllerRepo)
+    {
+        this.controllerRepo = controllerRepo;
+    }
+
+    @Override
+    public void setDeviceRepo(DeviceConnectionRepo deviceRepo)
+    {
+        this.deviceRepo = deviceRepo;
+    }
+
 }

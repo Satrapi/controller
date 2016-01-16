@@ -39,8 +39,8 @@ public class DbNetworkMapInitializerTest extends BaseGraphTest
     {
         seeder.seed(true);
 
-        map = seeder.getNetworkMap();
-        graph = map.getNetworkGraph();
+        networkMap = seeder.getNetworkMap();
+        graph = networkMap.getNetworkGraph();
 
         graphDelegator = new SdwnGraphDelegator(graph);
     }
