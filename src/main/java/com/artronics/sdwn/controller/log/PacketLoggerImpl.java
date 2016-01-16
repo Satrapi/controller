@@ -2,6 +2,7 @@ package com.artronics.sdwn.controller.log;
 
 import com.artronics.sdwn.domain.entities.packet.Packet;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
+import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public class PacketLoggerImpl implements PacketLogger
 {
     private final static Logger log = Logger.getLogger(PacketLoggerImpl.class);
+//    private final static String
 
     @Override
     public void logBuffer(Packet packet)
@@ -28,6 +30,12 @@ public class PacketLoggerImpl implements PacketLogger
         }
 
         return s;
+    }
+
+    @Override
+    public void logReport(SdwnReportPacket packet)
+    {
+
     }
 
     @Override
