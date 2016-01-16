@@ -22,7 +22,7 @@ public abstract class AbstractMapUpdater implements MapUpdater
     @Autowired
     protected MapLogger mapLogger;
 
-    protected Set<SdwnNodeEntity> registeredNodes;
+    protected Set<SdwnNodeEntity> controllerNodes;
 
     protected NetworkMap<SdwnNodeEntity> networkMap;
 
@@ -37,17 +37,17 @@ public abstract class AbstractMapUpdater implements MapUpdater
                           "NetworkMap.");
 
         nodeLogger.newNode(sink);
-        registeredNodes.add(sink);
+        controllerNodes.add(sink);
 
         return sink;
     }
 
     @Resource
-    @Qualifier("registeredNodes")
-    public void setRegisteredNodes(
-            Set<SdwnNodeEntity> registeredNodes)
+    @Qualifier("controllerNodes")
+    public void setControllerNodes(
+            Set<SdwnNodeEntity> controllerNodes)
     {
-        this.registeredNodes = registeredNodes;
+        this.controllerNodes = controllerNodes;
     }
 
     @Autowired

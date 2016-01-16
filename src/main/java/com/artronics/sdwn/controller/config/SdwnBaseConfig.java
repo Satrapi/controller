@@ -24,7 +24,7 @@ public class SdwnBaseConfig
 
     protected NetworkMap<SdwnNodeEntity> networkMap;
 
-    protected Set<SdwnNodeEntity> registeredNodes = new HashSet<>();
+    protected Set<SdwnNodeEntity> controllerNodes = new HashSet<>();
 
     @Bean
     public static PropertySourcesPlaceholderConfigurer placeHolderConfigurer()
@@ -38,10 +38,10 @@ public class SdwnBaseConfig
         return new SdwnNetworkMap();
     }
 
-    @Bean(name = "registeredNodes")
-    public Set<SdwnNodeEntity> getRegisteredNodes()
+    @Bean(name = "controllerNodes")
+    public Set<SdwnNodeEntity> getControllerNodes()
     {
-        return registeredNodes;
+        return controllerNodes;
     }
 
     @Value("${com.artronics.sdwn.controller.url}")

@@ -53,7 +53,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
     {
         newNeighbors.forEach(neighbor -> {
             SdwnNodeEntity node = neighbor.getNode();
-            if (!registeredNodes.contains(node))
+            if (!controllerNodes.contains(node))
                 throw new IllegalStateException
                         ("There is an unregistered neighbor's node inside report packet: "+node);
             if (!networkMap.contains(node)){

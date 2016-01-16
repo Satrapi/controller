@@ -26,7 +26,7 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
 
     private NodeRepo nodeRepo;
 
-    private Set<SdwnNodeEntity> registeredNodes;
+    private Set<SdwnNodeEntity> controllerNodes;
 
     @Override
     public DeviceConnectionEntity registerDevice(DeviceConnectionEntity device, SdwnNodeEntity sink)
@@ -67,7 +67,7 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
             log.debug("Sink Node persisted: " + sink.toString());
         }
 
-        registeredNodes.add(sink);
+        controllerNodes.add(sink);
 
         log.debug("Device persisted: " + persistedDev.toString() + " ->associated " + sink
                 .toString());
@@ -76,11 +76,11 @@ public class DeviceRegistrationServiceImpl implements DeviceRegistrationService
     }
 
     @Resource
-    @Qualifier("registeredNodes")
-    public void setRegisteredNodes(
-            Set<SdwnNodeEntity> registeredNodes)
+    @Qualifier("controllerNodes")
+    public void setControllerNodes(
+            Set<SdwnNodeEntity> controllerNodes)
     {
-        this.registeredNodes = registeredNodes;
+        this.controllerNodes = controllerNodes;
     }
 
     @Autowired

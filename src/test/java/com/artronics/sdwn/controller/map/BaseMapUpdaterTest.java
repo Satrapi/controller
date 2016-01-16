@@ -48,8 +48,8 @@ public class BaseMapUpdaterTest extends BaseGraphTest
     protected MapUpdater mapUpdater;
 
     @Resource
-    @Qualifier("registeredNodes")
-    protected Set<SdwnNodeEntity> registeredNodes;
+    @Qualifier("controllerNodes")
+    protected Set<SdwnNodeEntity> controllerNodes;
 
     @Autowired
     @Qualifier("mockNodeRepo")
@@ -150,10 +150,10 @@ public class BaseMapUpdaterTest extends BaseGraphTest
 
     protected void registerNodes(SdwnReportPacket packet)
     {
-        registeredNodes.add(packet.getSrcNode());
-        registeredNodes.add(packet.getDstNode());
+        controllerNodes.add(packet.getSrcNode());
+        controllerNodes.add(packet.getDstNode());
         packet.getNeighbors().forEach(neighbor ->
-                                              registeredNodes.add(neighbor.getNode()));
+                                              controllerNodes.add(neighbor.getNode()));
     }
 
     @Configuration

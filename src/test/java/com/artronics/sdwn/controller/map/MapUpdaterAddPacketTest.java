@@ -36,8 +36,8 @@ public class MapUpdaterAddPacketTest extends BaseMapUpdaterTest
         node35.setId(35L);
         sink.setDevice(device);
         sink.setId(100L);
-        registeredNodes.add(node35);
-        registeredNodes.add(sink);
+        controllerNodes.add(node35);
+        controllerNodes.add(sink);
     }
 
     @Test(expected = IllegalStateException.class)
@@ -88,8 +88,8 @@ public class MapUpdaterAddPacketTest extends BaseMapUpdaterTest
     @Test(expected = IllegalStateException.class)
     public void it_should_throw_exp_if_any_neighbor_node_is_not_registered_yet(){
         SdwnReportPacket packet =factory.createReportPacket(null,node35, sink, device, 10L);
-        registeredNodes.add(node35);
-        registeredNodes.add(sink);
+        controllerNodes.add(node35);
+        controllerNodes.add(sink);
         mapUpdater.updateMap(packet);
     }
 

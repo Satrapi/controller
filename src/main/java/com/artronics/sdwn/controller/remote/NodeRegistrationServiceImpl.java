@@ -15,21 +15,21 @@ public class NodeRegistrationServiceImpl implements NodeRegistrationService
 {
     private final static Logger log = Logger.getLogger(NodeRegistrationServiceImpl.class);
 
-    private Set<SdwnNodeEntity> registeredNodes;
+    private Set<SdwnNodeEntity> controllerNodes;
 
     private NodeRepo nodeRepo;
 
     @Override
     public SdwnNodeEntity registerNode(SdwnNodeEntity node)
     {
-        if (registeredNodes.contains(node))
+        if (controllerNodes.contains(node))
             throw new IllegalStateException
                     (node+ " is already in map. Attempt to register an already registered node.");
 
         node.setStatus(SdwnNodeEntity.Status.IDLE);
         nodeRepo.persist(node);
 
-        registeredNodes.add(node);
+        controllerNodes.add(node);
 
         log.debug(node+ " registered successfully.");
 
@@ -37,11 +37,11 @@ public class NodeRegistrationServiceImpl implements NodeRegistrationService
     }
 
     @Resource
-    @Qualifier("registeredNodes")
-    public void setRegisteredNodes(
-            Set<SdwnNodeEntity> registeredNodes)
+    @Qualifier("controllerNodes")
+    public void setControllerNodes(
+            Set<SdwnNodeEntity> controllerNodes)
     {
-        this.registeredNodes = registeredNodes;
+        this.controllerNodes = controllerNodes;
     }
 
     @Autowired
