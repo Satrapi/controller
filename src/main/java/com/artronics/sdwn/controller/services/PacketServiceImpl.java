@@ -1,9 +1,9 @@
 package com.artronics.sdwn.controller.services;
 
-import com.artronics.sdwn.controller.map.WeightCalculator;
 import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
+import com.artronics.sdwn.domain.map.WeightCalculator;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import org.apache.log4j.Logger;

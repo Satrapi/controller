@@ -2,17 +2,20 @@ package com.artronics.sdwn.controller;
 
 import com.artronics.sdwn.controller.config.HessianRmiConfig;
 import com.artronics.sdwn.controller.config.SdwnBeanConfig;
+import com.artronics.sdwn.controller.config.SdwnServletConfig;
+import com.artronics.sdwn.controller.config.SdwnWebInitializerConfig;
 import org.springframework.boot.Banner;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Configuration;
 
-@SpringBootApplication
+@EnableAutoConfiguration
+@Configuration
 @ComponentScan(basePackages = {"com.artronics.sdwn.controller",
 //"com.artronics.sdwn.domain"
 })
-@PropertySource("classpath:application.properties")
+//@PropertySource("classpath:application.properties")
 public class SdwnApplication
 {
     public static void main(String[] args)
@@ -23,7 +26,9 @@ public class SdwnApplication
                 .sources(
                         SdwnApplication.class,
                         SdwnBeanConfig.class,
-                        HessianRmiConfig.class
+                        HessianRmiConfig.class,
+                        SdwnWebInitializerConfig.class,
+                        SdwnServletConfig.class
                 )
 //                .registerShutdownHook(true)
                .build().run(args);

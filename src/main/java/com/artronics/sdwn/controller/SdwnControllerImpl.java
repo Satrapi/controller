@@ -1,11 +1,11 @@
 package com.artronics.sdwn.controller;
 
-import com.artronics.sdwn.controller.map.MapUpdater;
-import com.artronics.sdwn.controller.map.NetworkMap;
 import com.artronics.sdwn.domain.entities.NetworkSession;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
 import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
+import com.artronics.sdwn.domain.map.MapUpdater;
+import com.artronics.sdwn.domain.map.NetworkMap;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import com.artronics.sdwn.domain.repositories.PacketRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;

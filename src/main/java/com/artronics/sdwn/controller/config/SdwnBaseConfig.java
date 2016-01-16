@@ -1,9 +1,9 @@
 package com.artronics.sdwn.controller.config;
 
-import com.artronics.sdwn.controller.map.NetworkMap;
-import com.artronics.sdwn.controller.map.SdwnNetworkMap;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.PacketEntity;
+import com.artronics.sdwn.domain.map.NetworkMap;
+import com.artronics.sdwn.domain.map.SdwnNetworkMap;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
