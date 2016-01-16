@@ -157,7 +157,7 @@ public class BaseMapUpdaterTest extends BaseGraphTest
     }
 
     @Configuration
-    @ComponentScan(basePackages = {"com.artronics.sdwn.controller.log"})
+    @ComponentScan(basePackages = {"com.artronics.sdwn.domain.log"})
     public static class MapUpdaterBeanConfig
     {
         @Autowired

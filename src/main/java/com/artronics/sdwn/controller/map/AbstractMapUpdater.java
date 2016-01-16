@@ -1,9 +1,9 @@
 package com.artronics.sdwn.controller.map;
 
-import com.artronics.sdwn.controller.log.MapLogger;
-import com.artronics.sdwn.controller.log.NodeLogger;
 import com.artronics.sdwn.domain.entities.DeviceConnectionEntity;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
+import com.artronics.sdwn.domain.log.MapLogger;
+import com.artronics.sdwn.domain.log.NodeLogger;
 import com.artronics.sdwn.domain.repositories.NodeRepo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
