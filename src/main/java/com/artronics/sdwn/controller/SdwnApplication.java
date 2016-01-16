@@ -10,7 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.artronics.sdwn.controller",
-"com.artronics.sdwn.domain"})
+//"com.artronics.sdwn.domain"
+})
 @PropertySource("classpath:application.properties")
 public class SdwnApplication
 {
