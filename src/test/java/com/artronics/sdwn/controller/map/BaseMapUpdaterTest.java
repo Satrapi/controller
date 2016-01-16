@@ -1,10 +1,10 @@
 package com.artronics.sdwn.controller.map;
 
-import com.artronics.sdwn.controller.config.MockRepoBeanConfig;
 import com.artronics.sdwn.controller.config.SdwnBaseConfig;
 import com.artronics.sdwn.controller.map.graph.SdwnGraphDelegator;
 import com.artronics.sdwn.controller.support.NetworkMapPrinter;
 import com.artronics.sdwn.controller.support.SdwnNetMapPrinter;
+import com.artronics.sdwn.controller.testConfig.MockRepoBeanConfig;
 import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
