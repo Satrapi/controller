@@ -10,7 +10,6 @@ import com.artronics.sdwn.domain.repositories.NodeRepo;
 import com.artronics.sdwn.domain.repositories.SdwnControllerRepo;
 import com.artronics.sdwn.domain.repositories.SessionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /*
     Device1
@@ -44,7 +43,6 @@ import org.springframework.stereotype.Component;
                /         \
              246 --w30-- 30
  */
-@Component
 public class SeedNetworkGraphAndMap extends SeedNetworkGraph
 {
     private NetworkMap<SdwnNodeEntity> networkMap;
