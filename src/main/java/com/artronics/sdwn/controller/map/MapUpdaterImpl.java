@@ -135,13 +135,4 @@ public class MapUpdaterImpl extends AbstractMapUpdater
         }
     }
 
-    protected SdwnNodeEntity addNode(SdwnNodeEntity node)
-    {
-        node = nodeRepo.persist(node);
-        networkMap.addNode(node);
-        nodeLogger.newNode(node);
-
-        return node;
-    }
-
 }
