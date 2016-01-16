@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -36,7 +35,7 @@ public class MapUpdaterImpl extends AbstractMapUpdater
 
     protected SdwnReportPacket processReportPacket(SdwnReportPacket packet)
     {
-
+        log.debug("Update Map based on "+packet);
         SdwnNodeEntity srcNode = packet.getSrcNode();
 
         List<SdwnNeighbor> newNeighbors = packet.getNeighbors();
@@ -128,11 +127,6 @@ public class MapUpdaterImpl extends AbstractMapUpdater
                 nodeRepo.merge(node);
             }
         });
-        Iterator it = remainNeighbors.iterator();
-        while (it.hasNext()) {
-            SdwnNodeEntity nodeEntity = (SdwnNodeEntity) it.next();
-
-        }
     }
 
 }
