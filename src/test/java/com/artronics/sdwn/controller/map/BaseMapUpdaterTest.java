@@ -5,6 +5,7 @@ import com.artronics.sdwn.controller.config.SdwnBaseConfig;
 import com.artronics.sdwn.controller.map.graph.SdwnGraphDelegator;
 import com.artronics.sdwn.controller.support.NetworkMapPrinter;
 import com.artronics.sdwn.controller.support.SdwnNetMapPrinter;
+import com.artronics.sdwn.domain.entities.node.Neighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNeighbor;
 import com.artronics.sdwn.domain.entities.node.SdwnNodeEntity;
 import com.artronics.sdwn.domain.entities.packet.SdwnReportPacket;
@@ -18,14 +19,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import javax.annotation.Resource;
 import java.util.Set;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Mockito.when;
 
@@ -92,6 +94,7 @@ public class BaseMapUpdaterTest extends BaseGraphTest
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     public void it_should_remove_links_based_on_new_report(){
         SdwnReportPacket packet =factory.createReportPacket(fakeId,node137, node0, device, node135);
         registerNodes(packet);
@@ -102,12 +105,26 @@ public class BaseMapUpdaterTest extends BaseGraphTest
 
         assertFalse(networkMap.hasLink(node137,node136));
     }
+    
+    @Test
+    public void it_should_update_link(){
+        //createReportPacket creates all neighbors with constant weight
+        SdwnReportPacket packet =factory.createReportPacket(fakeId,node137, node0, device, node135);
+        registerNodesAndUpdateMap(packet);
+
+        Set<Neighbor<SdwnNodeEntity>> neighbors = networkMap.getNeighbors(node137);
+        neighbors.forEach(neighbor -> {
+            if (neighbor.getNode().equals(node135)){
+                assertThat(neighbor.getWeight(),equalTo(FakePacketFactory.WEIGHT));
+            }
+        });
+
+    }
 
     @Test
     public void it_should_remove_island_node_form_networkMap(){
         when(nodeRepo.findOne(anyLong())).thenReturn(node136);
 
-        System.out.println(printer.printNetworkMap(networkMap, device));
         assertTrue(networkMap.contains(node136));
         //first node 30 drops its link with 136
         SdwnReportPacket packet =factory.createReportPacket(fakeId,node30, node0, device, node135,node0);
@@ -120,8 +137,6 @@ public class BaseMapUpdaterTest extends BaseGraphTest
         //then node 135 drops its link with 136
         SdwnReportPacket packet3 =factory.createReportPacket(fakeId,node135, node0, device, node0);
         registerNodesAndUpdateMap(packet3);
-        System.out.println(printer.printNetworkMap(networkMap));
-
 
         //now node 136 must be island
         assertFalse(networkMap.contains(node136));

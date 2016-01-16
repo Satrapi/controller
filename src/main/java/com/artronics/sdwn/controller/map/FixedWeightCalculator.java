@@ -13,6 +13,6 @@ public class FixedWeightCalculator implements WeightCalculator
     @Override
     public double getWeight(SdwnNodeEntity node, Neighbor neighbor)
     {
-        return 100;
+        return 107;
     }
 }
